@@ -1,0 +1,115 @@
+/* Login: usa las variables y la base de index.css */
+.login-pagina{min-height:100svh;display:flex;align-items:center;padding:7.5rem 0 3rem}
+.login-card{
+  --acento:var(--hielo);
+  max-width:440px;margin-inline:auto;padding:2rem 1.75rem 1.6rem;
+  transition:box-shadow .5s,border-color .5s;
+}
+.login-card[data-rol="admin"]{
+  --acento:var(--lavanda);
+  border-color:rgba(201,190,255,.42);
+  box-shadow:0 26px 70px -22px rgba(124,92,242,.75);
+}
+
+/* Contenido que cambia según el rol */
+.login-card[data-rol="usuario"] [data-solo="admin"],
+.login-card[data-rol="admin"] [data-solo="usuario"]{display:none}
+.login-card [data-solo]{animation:cambia .35s ease}
+@keyframes cambia{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Encabezado */
+.rol-icono{
+  display:inline-grid;place-items:center;width:54px;height:54px;border-radius:50%;margin-bottom:1rem;
+  color:var(--acento);border:1px solid rgba(201,190,255,.3);
+  background:radial-gradient(circle at 30% 25%,rgba(143,211,255,.22),rgba(124,92,242,.12));
+  transition:color .4s;
+}
+.rol-icono svg{width:26px;height:26px}
+.login-titulo{font-size:1.9rem;line-height:1.15;margin:0 0 .35rem}
+.login-sub{color:var(--niebla-2);margin:0}
+
+/* Interruptor de rol */
+.rol-switch{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;margin:1.6rem 0 1.5rem;
+  border-radius:999px;background:rgba(8,13,38,.55);border:1px solid rgba(201,190,255,.25);
+}
+.rol-switch input{position:absolute;opacity:0;pointer-events:none}
+.rol-switch label{
+  position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.6rem .5rem;border-radius:999px;cursor:pointer;
+  color:var(--niebla-2);font-weight:600;font-size:.92rem;transition:color .3s;
+}
+.rol-switch label svg{width:16px;height:16px}
+.rol-switch label:hover{color:var(--niebla)}
+#rolUsuario:checked ~ label[for="rolUsuario"],
+#rolAdmin:checked ~ label[for="rolAdmin"]{color:#fff}
+.rol-thumb{
+  position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;
+  background:linear-gradient(135deg,var(--indigo),var(--violeta));
+  box-shadow:0 8px 20px -8px rgba(124,92,242,.85);
+  transition:transform .35s cubic-bezier(.3,.9,.3,1);
+}
+#rolAdmin:checked ~ .rol-thumb{transform:translateX(100%)}
+.rol-switch:has(input:focus-visible){outline:2px solid var(--hielo);outline-offset:3px}
+
+/* Campos */
+.campo{margin-bottom:.35rem}
+.campo label{display:block;margin:0 0 .4rem .5rem;font-size:.88rem;font-weight:600;color:var(--niebla-2)}
+.campo-in{position:relative}
+.campo-in .ico{
+  position:absolute;left:1rem;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;color:var(--niebla-2);pointer-events:none;transition:color .2s;
+}
+.campo-in:focus-within .ico{color:var(--acento)}
+.campo-in input{
+  width:100%;padding:.8rem 3rem .8rem 2.7rem;border-radius:999px;
+  background:rgba(8,13,38,.5);border:1px solid rgba(201,190,255,.28);
+  color:var(--niebla);font:inherit;transition:border-color .2s,box-shadow .2s;
+}
+.campo-in input::placeholder{color:rgba(169,179,219,.65)}
+.campo-in input:focus{
+  outline:none;border-color:var(--acento);
+  box-shadow:0 0 0 3px rgba(143,211,255,.2);
+}
+.login-card[data-rol="admin"] .campo-in input:focus{box-shadow:0 0 0 3px rgba(201,190,255,.22)}
+.campo-in input[aria-invalid="true"]{border-color:#ff8fa3}
+.campo-in input:-webkit-autofill{
+  -webkit-box-shadow:0 0 0 1000px #0F1745 inset;-webkit-text-fill-color:var(--niebla);caret-color:var(--niebla);
+}
+.error{min-height:1.2rem;margin:.3rem 0 0 .5rem;font-size:.82rem;color:#ff9db0}
+
+.ver-clave{
+  position:absolute;right:.45rem;top:50%;transform:translateY(-50%);
+  width:38px;height:38px;border:0;border-radius:50%;background:transparent;
+  color:var(--niebla-2);display:grid;place-items:center;cursor:pointer;transition:color .2s,background .2s;
+}
+.ver-clave:hover{color:#fff;background:rgba(201,190,255,.12)}
+.ver-clave svg{width:20px;height:20px}
+.ver-clave .tachado{display:none}
+.ver-clave[aria-pressed="true"] .tachado{display:block}
+
+/* Opciones y envío */
+.opciones{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin:.6rem 0 1.25rem;font-size:.88rem}
+.opciones a,.login-pie a{color:var(--hielo);text-decoration:none}
+.opciones a:hover,.login-pie a:hover{text-decoration:underline}
+.recordar{display:flex;align-items:center;gap:.55rem;color:var(--niebla-2);cursor:pointer;margin:0;font-weight:500}
+.recordar input{
+  appearance:none;-webkit-appearance:none;display:grid;place-content:center;margin:0;
+  width:18px;height:18px;border-radius:5px;border:1px solid rgba(201,190,255,.45);background:rgba(8,13,38,.5);
+  cursor:pointer;transition:background .2s,border-color .2s;
+}
+.recordar input:checked{background:linear-gradient(135deg,var(--indigo),var(--violeta));border-color:transparent}
+.recordar input:checked::after{
+  content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(-45deg) translate(1px,-1px);
+}
+.login-pie{margin:1.25rem 0 0;text-align:center;color:var(--niebla-2);font-size:.92rem}
+#btnEnviar:disabled{opacity:.75}
+
+/* Enlace activo del menú */
+.btn-ghost.activo{background:rgba(201,190,255,.14);border-color:var(--lavanda)}
+
+@media (prefers-reduced-motion:reduce){
+  .login-card [data-solo]{animation:none}
+  .rol-thumb{transition:none}
+}
