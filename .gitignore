@@ -1,7 +1,70 @@
-﻿.vscode/
+﻿
+# ==============================
+# EDITORES Y SISTEMA OPERATIVO
+# ==============================
+.vscode/
 .idea/
 .DS_Store
 Thumbs.db
+Desktop.ini
+
+# ==============================
+# PYTHON: ENTORNOS VIRTUALES
+# ==============================
+.venv/
+venv/
+env/
+ENV/
+
+# ==============================
+# PYTHON: ARCHIVOS TEMPORALES
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+
+# ==============================
+# PYTHON: PRUEBAS Y HERRAMIENTAS
+# ==============================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# ==============================
+# VARIABLES DE ENTORNO Y SECRETOS
+# ==============================
 .env
 .env.*
 !.env.example
+
+# ==============================
+# REGISTROS Y ARCHIVOS TEMPORALES
+# ==============================
+*.log
+tmp/
+temp/
+
+# ==============================
+# FRONTEND: DEPENDENCIAS Y COMPILADOS
+# ==============================
+node_modules/
+dist/
+build/
+
+# ==============================
+# BASES DE DATOS LOCALES (OPCIONAL)
+# ==============================
+*.sqlite
+*.sqlite3
+*.db
+
+# ==============================
+# SISTEMAS DE CONTROL DE VERSIONES
+# ==============================
+# No ignorar la carpeta .git del proyecto
