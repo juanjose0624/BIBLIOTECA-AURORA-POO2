@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ingresar · Aurora Libris</title>
+  <title>Crear cuenta · Aurora Libris</title>
   <link rel="icon" type="image/svg+xml" href="../iconos/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../css/index.css" rel="stylesheet">
   <link href="../css/login.css" rel="stylesheet">
+  <link href="../css/registro.css" rel="stylesheet">
 </head>
 <body>
 
@@ -39,8 +40,8 @@
           <li class="nav-item"><a class="nav-link" href="pqrs.html">PQRS</a></li>
         </ul>
         <div class="d-flex gap-2 mt-3 mt-lg-0">
-          <a class="btn btn-ghost activo" href="login.html" aria-current="page">Ingresar</a>
-          <a class="btn btn-aurora" href="registro.html">Crear cuenta</a>
+          <a class="btn btn-ghost" href="login.html">Ingresar</a>
+          <a class="btn btn-aurora" href="registro.html" aria-current="page">Crear cuenta</a>
         </div>
       </div>
     </div>
@@ -48,38 +49,46 @@
 
   <main class="login-pagina">
     <div class="container">
-      <div class="panel login-card" id="loginCard" data-rol="usuario">
+      <div class="panel login-card registro-card">
 
         <div class="text-center">
           <span class="rol-icono" aria-hidden="true">
-            <svg data-solo="usuario" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
-            <svg data-solo="admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M2.5 20c1.4-4 4.2-6 7.5-6s6 2 7.5 6"/><path d="M19 7v6M16 10h6"/></svg>
           </span>
-          <h1 class="login-titulo">
-            <span data-solo="usuario">Bienvenido de vuelta</span>
-            <span data-solo="admin">Panel de administración</span>
-          </h1>
-          <p class="login-sub">
-            <span data-solo="usuario">Ingresa para continuar con tu lectura.</span>
-            <span data-solo="admin">Acceso exclusivo para quienes administran la plataforma.</span>
-          </p>
+          <h1 class="login-titulo">Crea tu cuenta</h1>
+          <p class="login-sub">Empieza a leer y a sumar puntos.</p>
         </div>
 
-        <div class="rol-switch" role="radiogroup" aria-label="Tipo de acceso">
-          <input type="radio" name="rol" id="rolUsuario" value="usuario" checked>
-          <label for="rolUsuario">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
-            Usuario
-          </label>
-          <input type="radio" name="rol" id="rolAdmin" value="admin">
-          <label for="rolAdmin">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/></svg>
-            Administrador
-          </label>
-          <span class="rol-thumb" aria-hidden="true"></span>
-        </div>
+        <form id="formRegistro" class="mt-4" novalidate>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="nombre">Nombre</label>
+              <div class="campo-in">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" aria-describedby="errNombre">
+              </div>
+              <p class="error" id="errNombre" aria-live="polite"></p>
+            </div>
+            <div class="campo">
+              <label for="apellido">Apellido</label>
+              <div class="campo-in">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+                <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" autocomplete="family-name" aria-describedby="errApellido">
+              </div>
+              <p class="error" id="errApellido" aria-live="polite"></p>
+            </div>
+          </div>
 
-        <form id="formLogin" novalidate>
+          <div class="campo">
+            <label for="celular">Celular</label>
+            <div class="campo-in">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>
+              <span class="prefijo" aria-hidden="true">+57</span>
+              <input type="tel" id="celular" name="celular" class="con-prefijo" placeholder="300 123 4567" inputmode="numeric" autocomplete="tel-national" aria-describedby="errCelular">
+            </div>
+            <p class="error" id="errCelular" aria-live="polite"></p>
+          </div>
+
           <div class="campo">
             <label for="correo">Correo</label>
             <div class="campo-in">
@@ -93,30 +102,35 @@
             <label for="clave">Contraseña</label>
             <div class="campo-in">
               <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="3"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
-              <input type="password" id="clave" name="clave" placeholder="Tu contraseña" autocomplete="current-password" aria-describedby="errClave">
+              <input type="password" id="clave" name="clave" placeholder="Mínimo 8 caracteres" autocomplete="new-password" aria-describedby="errClave textoFuerza">
               <button type="button" class="ver-clave" id="verClave" aria-label="Mostrar contraseña" aria-pressed="false">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="tachado" d="M4 4l16 16"/></svg>
               </button>
             </div>
+            <div class="fuerza-fila">
+              <div class="fuerza" id="fuerza" data-nivel="0" aria-hidden="true"><span></span><span></span><span></span></div>
+              <p class="fuerza-texto" id="textoFuerza" aria-live="polite">Usa 8 caracteres o más, con letras y números.</p>
+            </div>
             <p class="error" id="errClave" aria-live="polite"></p>
           </div>
 
-          <div class="opciones">
-            <label class="recordar"><input type="checkbox" id="recordar" name="recordar"> Recordarme</label>
-            <a href="#" id="olvide">¿Olvidaste tu contraseña?</a>
-          </div>
+          <fieldset class="campo" aria-describedby="errSexo">
+            <legend>Sexo</legend>
+            <div class="pills">
+              <input type="radio" name="sexo" id="sexoF" value="femenino"><label for="sexoF">Femenino</label>
+              <input type="radio" name="sexo" id="sexoM" value="masculino"><label for="sexoM">Masculino</label>
+              <input type="radio" name="sexo" id="sexoN" value="no_indica"><label for="sexoN">Prefiero no decirlo</label>
+            </div>
+            <p class="error" id="errSexo" aria-live="polite"></p>
+          </fieldset>
 
-          <button type="submit" class="btn btn-aurora btn-lg w-100" id="btnEnviar">
+          <button type="submit" class="btn btn-aurora btn-lg w-100 mt-2" id="btnEnviar">
             <span class="spinner-border spinner-border-sm me-2 d-none" id="spin" aria-hidden="true"></span>
-            <span data-solo="usuario">Ingresar</span>
-            <span data-solo="admin">Ingresar como administrador</span>
+            Crear cuenta
           </button>
         </form>
 
-        <p class="login-pie">
-          <span data-solo="usuario">¿Aún no tienes cuenta? <a href="registro.html">Crear cuenta</a></span>
-          <span data-solo="admin">¿Necesitas acceso? Solicítalo a quien administra la plataforma.</span>
-        </p>
+        <p class="login-pie">¿Ya tienes cuenta? <a href="login.html">Ingresar</a></p>
       </div>
     </div>
   </main>
@@ -131,6 +145,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
   <script src="../js/nav.js"></script>
-  <script src="../js/login.js"></script>
+  <script src="../js/registro.js"></script>
 </body>
 </html>

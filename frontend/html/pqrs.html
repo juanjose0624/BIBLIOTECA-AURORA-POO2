@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PQRS · Aurora Libris</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/index.css" rel="stylesheet">
+  <link href="../css/login.css" rel="stylesheet">
+  <link href="../css/pqrs.css" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="../iconos/favicon.svg">
+</head>
+<body>
+
+  <div class="cielo" aria-hidden="true">
+    <span class="banda b1"></span><span class="banda b2"></span><span class="banda b3"></span>
+  </div>
+
+  <nav class="navbar navbar-expand-lg fixed-top nav-aurora" data-bs-theme="dark">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#8FD3FF"/><stop offset="1" stop-color="#7C5CF2"/></linearGradient></defs>
+          <path d="M3 24c4-10 9-15 13-15s9 5 13 15" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M8 25c3-6 6-9 8-9s5 3 8 9" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round" opacity=".6"/>
+          <path d="M4 28h24" stroke="#C9BEFF" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <span>Aurora Libris</span>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav mx-lg-auto gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="pqrs.html" aria-current="page">PQRS</a></li>
+        </ul>
+        <div class="d-flex gap-2 mt-3 mt-lg-0">
+          <a class="btn btn-ghost" href="login.html">Ingresar</a>
+          <a class="btn btn-aurora" href="registro.html">Crear cuenta</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="login-pagina">
+    <div class="container">
+      <div class="panel login-card pqrs-card">
+
+        <div class="text-center">
+          <span class="rol-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 016.5 3h11A2.5 2.5 0 0120 5.5v8a2.5 2.5 0 01-2.5 2.5H11l-4.5 4v-4h0A2.5 2.5 0 014 13.5z"/><path d="M8.5 8.5h7M8.5 11.5h4"/></svg>
+          </span>
+          <h1 class="login-titulo">Cuéntanos qué necesitas</h1>
+          <p class="login-sub">Peticiones, quejas, reclamos y sugerencias. Usaremos tu correo para responderte.</p>
+        </div>
+
+        <form id="formPqrs" class="mt-4" novalidate>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="nombre">Nombre</label>
+              <div class="campo-in">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="given-name" aria-describedby="errNombre">
+              </div>
+              <p class="error" id="errNombre" aria-live="polite"></p>
+            </div>
+            <div class="campo">
+              <label for="apellido">Apellido</label>
+              <div class="campo-in">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+                <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" autocomplete="family-name" aria-describedby="errApellido">
+              </div>
+              <p class="error" id="errApellido" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="correo">Correo</label>
+            <div class="campo-in">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 8l8 6 8-6"/></svg>
+              <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" autocomplete="email" aria-describedby="errCorreo">
+            </div>
+            <p class="error" id="errCorreo" aria-live="polite"></p>
+          </div>
+
+          <fieldset class="campo" aria-describedby="ayudaTipo errTipo">
+            <legend>Tipo de solicitud</legend>
+            <div class="pills">
+              <input type="radio" name="tipo" id="tipoP" value="peticion"><label for="tipoP">Petición</label>
+              <input type="radio" name="tipo" id="tipoQ" value="queja"><label for="tipoQ">Queja</label>
+              <input type="radio" name="tipo" id="tipoR" value="reclamo"><label for="tipoR">Reclamo</label>
+              <input type="radio" name="tipo" id="tipoS" value="sugerencia"><label for="tipoS">Sugerencia</label>
+            </div>
+            <p class="ayuda-tipo" id="ayudaTipo" aria-live="polite">Elige la que mejor describe tu caso.</p>
+            <p class="error" id="errTipo" aria-live="polite"></p>
+          </fieldset>
+
+          <div class="campo">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" maxlength="600" placeholder="Cuéntanos con detalle qué ocurrió o qué necesitas" aria-describedby="errMensaje"></textarea>
+            <div class="contador"><span id="cuenta">0</span> / 600</div>
+            <p class="error" id="errMensaje" aria-live="polite"></p>
+          </div>
+
+          <button type="submit" class="btn btn-aurora btn-lg w-100 mt-2" id="btnEnviar">
+            <span class="spinner-border spinner-border-sm me-2 d-none" id="spin" aria-hidden="true"></span>
+            Enviar solicitud
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="container d-flex flex-wrap justify-content-between gap-2">
+      <span>Aurora Libris</span>
+      <span>© <span id="anio"></span> · Proyecto de POO 2</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/pqrs.js"></script>
+</body>
+</html>

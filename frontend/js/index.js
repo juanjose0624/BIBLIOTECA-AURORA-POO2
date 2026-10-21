@@ -32,9 +32,27 @@ const tecItem = (t, oculto) => `
     <span>${t.nombre}</span>
   </div>`;
  
-document.getElementById('tecPista').innerHTML =
-  tecnologias.map(t => tecItem(t, false)).join('') +
-  tecnologias.map(t => tecItem(t, true)).join('');
+const pista = document.getElementById('tecPista');
+
+const dibujarCarrusel = () => {
+  // Cada grupo repite la lista las veces necesarias para cubrir el ancho de la pantalla
+  pista.innerHTML = tecnologias.map(t => tecItem(t, false)).join('');
+  const copias = Math.max(1, Math.ceil(window.innerWidth / pista.scrollWidth));
+  const grupo = g => Array.from({ length: copias }, (_, c) =>
+    tecnologias.map(t => tecItem(t, g > 0 || c > 0)).join('')).join('');
+
+  // Dos grupos idénticos: el CSS desplaza -50% y el bucle no tiene saltos
+  pista.innerHTML = grupo(0) + grupo(1);
+};
+
+dibujarCarrusel();
+document.fonts.ready.then(dibujarCarrusel);
+
+let temporizador;
+window.addEventListener('resize', () => {
+  clearTimeout(temporizador);
+  temporizador = setTimeout(dibujarCarrusel, 200);
+});
  
 // Muestra del catálogo (luego vendrá de la API en Python/PostgreSQL)
 const libros = [
@@ -42,7 +60,7 @@ const libros = [
     titulo: 'Don Quijote de la Mancha',
     autor: 'Miguel de Cervantes',
     puntos: 120,
-    portada: 'https://www.planetadelibros.com.co/usuaris/libros/fotos/427/original/426264_portada_don-quijote-de-la-mancha_miguel-de-cervantes_202507100651.jpg', 
+    portada: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF-cBPbxkuMMS9JV9JyeRLXqbXyH_m0kZtodrGMX8xmSXfYMPWu1yHoSo&s=10', 
     fondo: 'linear-gradient(160deg,#3445B4,#8FD3FF)' 
   },
   {

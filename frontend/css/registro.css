@@ -1,0 +1,25 @@
+/* Registro: se apoya en index.css y login.css */
+.registro-card{max-width:540px}
+
+/* Celular con prefijo */
+.prefijo{
+  position:absolute;left:2.7rem;top:50%;transform:translateY(-50%);
+  font-size:.95rem;font-weight:600;color:var(--niebla-2);pointer-events:none;
+}
+.campo-in input.con-prefijo{padding-left:5.1rem}
+
+/* Medidor de contraseña */
+.fuerza-fila{display:flex;align-items:center;gap:.8rem;margin:.55rem 0 0 .5rem}
+.fuerza{display:flex;gap:4px;width:84px;flex:none}
+.fuerza span{flex:1;height:4px;border-radius:99px;background:rgba(201,190,255,.18);transition:background .3s}
+.fuerza[data-nivel="1"] span:nth-child(-n+1){background:#ff9db0}
+.fuerza[data-nivel="2"] span:nth-child(-n+2){background:var(--lavanda)}
+.fuerza[data-nivel="3"] span{background:var(--hielo)}
+.fuerza-texto{margin:0;font-size:.82rem;color:var(--niebla-2)}
+
+/* Sexo: tres opciones, la última más ancha */
+.pills{grid-template-columns:1fr 1fr 1.5fr}
+@media (max-width:480px){.pills{grid-template-columns:1fr 1fr}.pills label[for="sexoN"]{grid-column:1 / -1}}
+
+/* Botón de la página actual */
+.btn-aurora[aria-current="page"]{box-shadow:0 0 0 3px rgba(143,211,255,.25)}

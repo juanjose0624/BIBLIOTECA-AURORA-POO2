@@ -1,0 +1,22 @@
+/* PQRS: se apoya en index.css y login.css */
+.pqrs-card{max-width:560px}
+
+/* Tipo de solicitud: cuatro opciones */
+.pills{grid-template-columns:repeat(4,1fr)}
+@media (max-width:520px){.pills{grid-template-columns:repeat(2,1fr)}}
+.ayuda-tipo{margin:.55rem 0 0 .5rem;min-height:1.2rem;font-size:.82rem;color:var(--niebla-2)}
+
+/* Mensaje */
+.campo textarea{
+  display:block;width:100%;min-height:130px;padding:.85rem 1.2rem;resize:vertical;
+  border-radius:1.25rem;background:rgba(8,13,38,.5);border:1px solid rgba(201,190,255,.28);
+  color:var(--niebla);font:inherit;line-height:1.55;transition:border-color .2s,box-shadow .2s;
+}
+.campo textarea::placeholder{color:rgba(169,179,219,.65)}
+.campo textarea:focus{outline:none;border-color:var(--acento);box-shadow:0 0 0 3px rgba(143,211,255,.2)}
+.campo textarea[aria-invalid="true"]{border-color:#ff8fa3}
+.contador{text-align:right;margin:.3rem .6rem 0 0;font-size:.78rem;color:var(--niebla-2)}
+
+/* Enlace de la página actual en el menú */
+.nav-aurora .nav-link[aria-current="page"]{color:var(--niebla)}
+.nav-aurora .nav-link[aria-current="page"]::after{transform:scaleX(1)}

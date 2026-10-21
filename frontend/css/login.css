@@ -106,6 +106,27 @@
 .login-pie{margin:1.25rem 0 0;text-align:center;color:var(--niebla-2);font-size:.92rem}
 #btnEnviar:disabled{opacity:.75}
 
+/* Formularios: dos columnas y opciones en píldora (compartido por registro y PQRS) */
+.fila-2{display:grid;grid-template-columns:1fr 1fr;gap:0 .9rem}
+@media (max-width:560px){.fila-2{grid-template-columns:1fr}}
+fieldset.campo{border:0;padding:0;margin:0 0 .35rem}
+fieldset.campo legend{float:none;width:auto;margin:0 0 .5rem .5rem;padding:0;font-size:.88rem;font-weight:600;color:var(--niebla-2)}
+.pills{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+.pills input{position:absolute;opacity:0;pointer-events:none}
+.pills label{
+  display:flex;align-items:center;justify-content:center;padding:.62rem .5rem;border-radius:999px;cursor:pointer;
+  font-size:.92rem;font-weight:600;color:var(--niebla-2);text-align:center;
+  background:rgba(8,13,38,.5);border:1px solid rgba(201,190,255,.28);
+  transition:color .25s,border-color .25s,background .25s,box-shadow .25s;
+}
+.pills label:hover{color:var(--niebla);border-color:var(--lavanda)}
+.pills input:checked + label{
+  color:#fff;border-color:transparent;
+  background:linear-gradient(135deg,var(--indigo),var(--violeta));
+  box-shadow:0 8px 20px -8px rgba(124,92,242,.85);
+}
+.pills input:focus-visible + label{outline:2px solid var(--hielo);outline-offset:3px}
+
 /* Enlace activo del menú */
 .btn-ghost.activo{background:rgba(201,190,255,.14);border-color:var(--lavanda)}
 
