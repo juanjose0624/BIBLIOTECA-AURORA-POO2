@@ -54,9 +54,23 @@ const validar = () => {
 
 [correo, clave].forEach(c => c.addEventListener('input', () => marcar(c, c === correo ? 'errCorreo' : 'errClave', '')));
 
-// Envío. Aquí se conectará el servidor en Python:
-// el servidor debe comprobar el rol real del usuario en la tabla y no confiar en el interruptor.
-const iniciarSesion = datos => new Promise(resolve => setTimeout(() => resolve({ ok: true, datos }), 700));
+// Envío al servidor (Flask): POST /api/login
+// El interruptor solo dice qué acceso se pide; el servidor comprueba el rol real de la cuenta.
+// Adónde va cada rol después de ingresar. Cuando existan los dashboards solo se cambian estas rutas.
+const DESTINOS = {
+  usuario: '../dashboards/usuario.html',
+  administrador: '../dashboards/administrador.html'
+};
+
+const iniciarSesion = async datos => {
+  const respuesta = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos)
+  });
+  const cuerpo = await respuesta.json().catch(() => ({}));
+  return { ok: respuesta.ok, estado: respuesta.status, ...cuerpo };
+};
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -73,15 +87,23 @@ form.addEventListener('submit', async e => {
   };
 
   try {
-    await iniciarSesion(datos);
-    Swal.fire({
-      ...tema,
-      icon: 'info',
-      title: 'Maqueta lista',
-      text: `El formulario enviaría correo, contraseña y rol (${datos.rol}). Falta conectar el servidor.`
-    });
+    const r = await iniciarSesion(datos);
+    if (r.ok) {
+      await Swal.fire({ ...tema, icon: 'success', title: '¡Bienvenido!', text: `Hola, ${r.nombre}.`, timer: 1400, showConfirmButton: false });
+      window.location.href = DESTINOS[r.rol] || '../index.html';
+      return;
+    }
+
+    if (r.estado === 401) {
+      // Correo o contraseña incorrectos
+      marcar(clave, 'errClave', r.mensaje);
+      clave.focus();
+    } else {
+      // 403 (acceso que no corresponde a la cuenta), 400 u otros errores
+      Swal.fire({ ...tema, icon: r.estado === 403 ? 'warning' : 'error', title: 'No se pudo ingresar', text: r.mensaje || 'Inténtalo de nuevo en un momento.' });
+    }
   } catch {
-    Swal.fire({ ...tema, icon: 'error', title: 'No se pudo ingresar', text: 'Revisa tus datos e inténtalo de nuevo.' });
+    Swal.fire({ ...tema, icon: 'error', title: 'No hay conexión con el servidor', text: 'Revisa que el backend esté encendido e inténtalo de nuevo.' });
   } finally {
     btnEnviar.disabled = false;
     spin.classList.add('d-none');

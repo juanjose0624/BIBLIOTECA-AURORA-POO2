@@ -1,0 +1,338 @@
+
+/* =========================================
+   ACTUALIZAR DATOS · AURORA LIBRIS
+   ========================================= */
+
+.actualizar-pagina {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 7.5rem 0 3rem;
+}
+
+/* Panel principal */
+
+.actualizar-card {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid rgba(143, 211, 255, .22);
+}
+
+/* Encabezado */
+
+.actualizar-card .rol-icono {
+    margin-bottom: .85rem;
+}
+
+.actualizar-card .login-titulo {
+    margin-bottom: .5rem;
+}
+
+.actualizar-card .login-sub {
+    margin-bottom: 0;
+}
+
+/* Formulario */
+
+.actualizar-card form {
+    width: 100%;
+}
+
+.actualizar-card .fila-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1rem;
+}
+
+.actualizar-card .campo {
+    min-width: 0;
+    margin-bottom: 1.15rem;
+}
+
+.actualizar-card .campo label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.actualizar-card .campo-in {
+    min-width: 0;
+}
+
+.actualizar-card .campo-in input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+}
+
+.actualizar-card .campo-in input:focus {
+    outline: none;
+}
+
+/* =========================================
+   CAMPO DE CELULAR CON ICONO Y PREFIJO
+   ========================================= */
+
+.actualizar-card .campo-in {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+}
+
+/* Icono del teléfono */
+.actualizar-card .campo-in .ico {
+    position: absolute;
+    left: 14px;
+    width: 20px;
+    height: 20px;
+    stroke: var(--niebla-2, rgba(255, 255, 255, 0.7));
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+/* Prefijo (+57) */
+.actualizar-card .campo-in .prefijo {
+    position: absolute;
+    left: 44px; /* Ubicado justo después del icono */
+    font-weight: 500;
+    color: var(--niebla, #ffffff);
+    font-size: 1rem;
+    pointer-events: none;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* Input del teléfono */
+.actualizar-card .campo-in input[type="tel"].con-prefijo {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    /* Ajusta el padding izquierdo (86px) para que el texto digitado 
+       nunca se encime con el icono ni con el +57 */
+    padding: 12px 16px 12px 86px; 
+    border-radius: 999px; /* O el radio que manejes en tus inputs */
+    border: 1px solid rgba(201, 190, 255, .25);
+    background: rgba(17, 26, 74, .4);
+    color: var(--niebla, #ffffff);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: 
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+/* Estado Focus para el input de celular */
+.actualizar-card .campo-in input[type="tel"].con-prefijo:focus {
+    outline: none;
+    border-color: var(--violeta, #7c5cf2);
+    background: rgba(17, 26, 74, .7);
+    box-shadow: 0 0 0 2px rgba(124, 92, 242, .12);
+}
+
+/* Selección de sexo */
+
+.actualizar-card fieldset.campo {
+    padding: 0;
+    border: 0;
+}
+
+.actualizar-card fieldset legend {
+    float: none;
+    width: auto;
+    margin-bottom: .65rem;
+    font-size: inherit;
+    font-weight: 700;
+    color: var(--niebla);
+}
+
+.actualizar-card .pills {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .65rem;
+}
+
+.actualizar-card .pills input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.actualizar-card .pills label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    margin: 0;
+    padding: .65rem .75rem;
+    border: 1px solid rgba(201, 190, 255, .25);
+    border-radius: 999px;
+    color: var(--niebla-2);
+    background: rgba(17, 26, 74, .4);
+    text-align: center;
+    font-size: .9rem;
+    cursor: pointer;
+    transition:
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.actualizar-card .pills label:hover {
+    color: var(--niebla);
+    border-color: rgba(143, 211, 255, .6);
+}
+
+.actualizar-card .pills input:checked + label {
+    color: var(--niebla);
+    background: rgba(124, 92, 242, .2);
+    border-color: var(--violeta);
+    box-shadow: 0 0 0 2px rgba(124, 92, 242, .12);
+}
+
+.actualizar-card .pills input:focus-visible + label {
+    outline: 2px solid var(--hielo);
+    outline-offset: 3px;
+}
+
+/* Errores de validación */
+
+.actualizar-card .error {
+    min-height: 0;
+    margin: .35rem 0 0;
+    font-size: .82rem;
+}
+
+.actualizar-card .error:empty {
+    display: none;
+}
+
+/* Mensajes generales */
+
+.alerta-formulario {
+    margin: 1.25rem 0 0;
+    padding: .85rem 1rem;
+    border: 1px solid rgba(143, 211, 255, .3);
+    border-radius: 1rem;
+    color: var(--niebla);
+    background: rgba(143, 211, 255, .08);
+    font-size: .92rem;
+    overflow-wrap: anywhere;
+}
+
+.alerta-formulario[hidden] {
+    display: none;
+}
+
+.alerta-formulario.error {
+    color: #ffb5c1;
+    border-color: rgba(255, 143, 163, .5);
+    background: rgba(255, 143, 163, .07);
+}
+
+.alerta-formulario.exito {
+    color: #b9f5d0;
+    border-color: rgba(105, 220, 160, .4);
+    background: rgba(105, 220, 160, .07);
+}
+
+/* Botones */
+
+.actualizar-acciones {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .85rem;
+    margin-top: 1.75rem;
+}
+
+.actualizar-acciones .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: .35rem;
+    min-height: 48px;
+    padding: .75rem 1.35rem;
+    font-family: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.actualizar-acciones .btn:not(:disabled):hover {
+    transform: translateY(-1px);
+}
+
+.actualizar-acciones .btn:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+    transform: none;
+}
+
+.actualizar-acciones .btn:focus-visible {
+    outline: 2px solid var(--hielo);
+    outline-offset: 3px;
+}
+
+/* Nota inferior */
+
+.actualizar-nota {
+    margin: 1.5rem 0 0;
+    color: var(--niebla-2);
+    text-align: center;
+    font-size: .84rem;
+    line-height: 1.6;
+}
+
+/* Adaptación a móviles */
+
+@media (max-width: 575.98px) {
+    .actualizar-pagina {
+        padding: 6rem 0 2rem;
+    }
+
+    .actualizar-card {
+        padding: 1.25rem;
+    }
+
+    .actualizar-card .fila-2 {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+
+    .actualizar-card .pills {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .actualizar-acciones {
+        flex-direction: column;
+    }
+
+    .actualizar-acciones .btn {
+        width: 100%;
+    }
+}
+
+/* Accesibilidad */
+
+@media (prefers-reduced-motion: reduce) {
+    .actualizar-card *,
+    .actualizar-card *::before,
+    .actualizar-card *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}

@@ -18,3 +18,32 @@ document.querySelectorAll('.nav-link').forEach(enlace => {
 
 const anio = document.getElementById('anio');
 if (anio) anio.textContent = new Date().getFullYear();
+
+/* Cierre de sesión */
+const btnCerrarSesion = document.getElementById('btnCerrarSesion');
+
+if (btnCerrarSesion) {
+  btnCerrarSesion.addEventListener('click', async () => {
+    btnCerrarSesion.disabled = true;
+
+    try {
+      const respuesta = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+      });
+
+      if (!respuesta.ok) {
+        throw new Error('No se pudo cerrar la sesión.');
+      }
+
+      window.location.replace('/');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      alert('No se pudo cerrar la sesión. Inténtalo de nuevo.');
+      btnCerrarSesion.disabled = false;
+    }
+  });
+}

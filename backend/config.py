@@ -4,6 +4,7 @@ Los datos secretos (contraseña de la base de datos, clave secreta) NO se escrib
 viven en el archivo .env, que no se comparte ni se sube a Git.
 """
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -12,6 +13,11 @@ load_dotenv()  # lee el archivo .env y lo convierte en variables de entorno
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "")
+
+    # Sesión (cookie): no accesible desde JavaScript, y no se envía desde otros sitios
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
+    PERMANENT_SESSION_LIFETIME = timedelta(days=30)  # solo si marcan "Recordarme"
 
     # Datos de conexión a PostgreSQL
     DB = {
