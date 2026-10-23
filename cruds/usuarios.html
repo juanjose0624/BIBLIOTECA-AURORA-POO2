@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Administración de usuarios de Aurora Libris."
+    >
+
+    <title>Gestión de usuarios | Aurora Libris</title>
+
+    <link rel="icon" href="/iconos/favicon.svg" type="image/svg+xml">
+
+    <!-- Iconos -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="/css/usuarios_crud.css">
+
+    <!-- Lógica del CRUD -->
+    <script src="/js/usuarios_crud.js" defer></script>
+</head>
+
+<body>
+    <div class="contenedor-aplicacion">
+
+        <!-- BARRA LATERAL -->
+        <aside class="barra-lateral" id="barraLateral">
+
+            <a
+                class="marca"
+                href="/dashboards/administrador.html"
+                aria-label="Volver al panel de administración"
+            >
+                <span class="marca-icono" aria-hidden="true">A</span>
+
+                <span class="marca-texto">
+                    <strong>Aurora Libris</strong>
+                    <small>Administración</small>
+                </span>
+            </a>
+
+            <nav
+                class="navegacion"
+                aria-label="Navegación administrativa"
+            >
+                <p class="navegacion-titulo">MENÚ PRINCIPAL</p>
+
+                <a
+                    class="enlace-nav"
+                    href="/dashboards/administrador.html"
+                >
+                    <i class="fa-solid fa-house" aria-hidden="true"></i>
+                    <span>Panel principal</span>
+                </a>
+
+                <a class="enlace-nav" href="/cruds/pqrs.html">
+                    <i class="fa-solid fa-inbox" aria-hidden="true"></i>
+                    <span>Gestión de PQRS</span>
+                </a>
+
+                <a
+                    class="enlace-nav activo"
+                    href="/cruds/usuarios.html"
+                    aria-current="page"
+                >
+                    <i class="fa-solid fa-users" aria-hidden="true"></i>
+                    <span>Gestión de usuarios</span>
+                </a>
+
+                <a
+                    class="enlace-nav"
+                    href="/cruds/estadisticas.html"
+                >
+                    <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+                    <span>Gestión de estadísticas</span>
+                </a>
+
+                <a
+                    class="enlace-nav"
+                    href="/cruds/solicitudes.html"
+                >
+                    <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+                    <span>Gestión de solicitudes</span>
+                </a>
+
+                <a class="enlace-nav" href="/cruds/libros.html">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                    <span>Gestión de libros</span>
+                </a>
+            </nav>
+
+            <div class="barra-lateral-inferior">
+                <a
+                    class="enlace-nav"
+                    href="/dashboards/administrador.html"
+                >
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                    <span>Volver al panel</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="contenido-principal">
+
+            <!-- ENCABEZADO -->
+            <header class="encabezado-pagina">
+
+                <div class="encabezado-titulo">
+                    <p class="ruta-navegacion">
+                        Administración / Usuarios
+                    </p>
+
+                    <h1>Gestión de usuarios</h1>
+
+                    <p class="descripcion-pagina">
+                        Administra las cuentas, consulta sus datos
+                        y controla sus permisos de acceso.
+                    </p>
+                </div>
+
+                <div class="encabezado-acciones">
+                    <button
+                        type="button"
+                        class="boton boton-secundario"
+                        id="btnActualizar"
+                    >
+                        <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                        <span>Actualizar</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton boton-principal"
+                        id="btnNuevoUsuario"
+                    >
+                        <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                        <span>Nuevo usuario</span>
+                    </button>
+                </div>
+
+            </header>
+
+            <!-- MENSAJES -->
+            <div
+                id="mensajeEstado"
+                class="mensaje-estado"
+                role="status"
+                aria-live="polite"
+                hidden
+            ></div>
+
+            <!-- TARJETAS DE RESUMEN -->
+            <section class="resumen-usuarios" aria-label="Resumen de usuarios">
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-usuarios">
+                        <i class="fa-solid fa-users" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="resumen-informacion">
+                        <p>Total de usuarios</p>
+                        <strong id="totalUsuarios">—</strong>
+                        <span>Registros encontrados</span>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-administradores">
+                        <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="resumen-informacion">
+                        <p>Administradores</p>
+                        <strong id="totalAdministradores">—</strong>
+                        <span>Cuentas con rol administrativo</span>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-cuentas">
+                        <i class="fa-solid fa-user-check" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="resumen-informacion">
+                        <p>Usuarios registrados</p>
+                        <strong id="totalRegulares">—</strong>
+                        <span>Cuentas de usuario</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- LISTADO DE USUARIOS -->
+            <section class="panel-usuarios">
+
+                <div class="panel-encabezado">
+                    <div>
+                        <h2>Usuarios registrados</h2>
+                        <p>Consulta y administra las cuentas del sistema.</p>
+                    </div>
+
+                    <span class="contador-registros" id="contadorRegistros">
+                        0 registros
+                    </span>
+                </div>
+
+                <!-- BÚSQUEDA Y FILTROS -->
+                <div class="filtros-usuarios">
+
+                    <div class="campo-busqueda">
+                        <i
+                            class="fa-solid fa-magnifying-glass"
+                            aria-hidden="true"
+                        ></i>
+
+                        <label class="solo-lectores" for="buscarUsuario">
+                            Buscar usuarios
+                        </label>
+
+                        <input
+                            type="search"
+                            id="buscarUsuario"
+                            placeholder="Buscar por nombre o correo..."
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="campo-filtro">
+                        <label for="filtroRol">Filtrar por rol</label>
+
+                        <select id="filtroRol">
+                            <option value="">Todos los roles</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="usuario">Usuario</option>
+                        </select>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="boton boton-secundario"
+                        id="btnLimpiarFiltros"
+                    >
+                        <i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i>
+                        <span>Limpiar filtros</span>
+                    </button>
+
+                </div>
+
+                <!-- TABLA -->
+                <div class="tabla-contenedor">
+                    <table class="tabla-usuarios">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Correo electrónico</th>
+                                <th scope="col">Rol</th>
+                                <th scope="col">Fecha de registro</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaUsuarios">
+                            <tr>
+                                <td colspan="5" class="estado-tabla">
+                                    <i
+                                        class="fa-solid fa-users"
+                                        aria-hidden="true"
+                                    ></i>
+
+                                    <p>Los usuarios aparecerán aquí.</p>
+                                    <span>
+                                        Cuando conectemos el JavaScript,
+                                        se cargarán los registros.
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- PIE DE TABLA -->
+                <footer class="tabla-pie">
+                    <p id="textoPaginacion">
+                        Listado de usuarios
+                    </p>
+                </footer>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL PARA CREAR Y EDITAR -->
+    <div
+        class="modal"
+        id="modalUsuario"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloModalUsuario"
+        hidden
+    >
+        <div class="modal-contenido">
+
+            <header class="modal-encabezado">
+                <div>
+                    <h2 id="tituloModalUsuario">Nuevo usuario</h2>
+                    <p id="descripcionModalUsuario">
+                        Completa los datos de la cuenta.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    class="boton-cerrar"
+                    id="btnCerrarModal"
+                    aria-label="Cerrar formulario"
+                >
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </header>
+
+
+<form id="formularioUsuario" autocomplete="off">
+
+    <input type="hidden" id="usuarioId" name="id">
+
+    <div class="campo-formulario">
+        <label for="nombreUsuario">Nombre</label>
+        <input
+            type="text"
+            id="nombreUsuario"
+            name="nombre"
+            maxlength="60"
+            placeholder="Nombre del usuario"
+            autocomplete="given-name"
+            required
+        >
+    </div>
+
+    <div class="campo-formulario">
+        <label for="apellidoUsuario">Apellido</label>
+        <input
+            type="text"
+            id="apellidoUsuario"
+            name="apellido"
+            maxlength="60"
+            placeholder="Apellido del usuario"
+            autocomplete="family-name"
+            required
+        >
+    </div>
+
+    <div class="campo-formulario">
+        <label for="celularUsuario">Celular</label>
+        <input
+            type="tel"
+            id="celularUsuario"
+            name="celular"
+            maxlength="10"
+            minlength="10"
+            pattern="3[0-9]{9}"
+            inputmode="numeric"
+            placeholder="Ej. 3001234567"
+            autocomplete="tel"
+            required
+        >
+        <small>Ingresa un celular colombiano de 10 dígitos.</small>
+    </div>
+
+    <div class="campo-formulario">
+        <label for="correoUsuario">Correo electrónico</label>
+        <input
+            type="email"
+            id="correoUsuario"
+            name="correo"
+            maxlength="254"
+            placeholder="usuario@ejemplo.com"
+            autocomplete="email"
+            required
+        >
+    </div>
+
+    <div class="campo-formulario">
+        <label for="sexoUsuario">Sexo</label>
+        <select id="sexoUsuario" name="sexo" required>
+            <option value="">Selecciona una opción</option>
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
+            <option value="no_indica">Prefiero no indicar</option>
+        </select>
+    </div>
+
+    <div class="campo-formulario">
+        <label for="rolUsuario">Rol de la cuenta</label>
+        <select id="rolUsuario" name="rol" required>
+            <option value="">Selecciona un rol</option>
+            <option value="usuario">Usuario</option>
+            <option value="administrador">Administrador</option>
+        </select>
+        <small>El rol determina los permisos de acceso al sistema.</small>
+    </div>
+
+    <div class="campo-formulario" id="contenedorContrasena">
+        <label for="contrasenaUsuario">Contraseña</label>
+        <input
+            type="password"
+            id="contrasenaUsuario"
+            name="clave"
+            minlength="8"
+            maxlength="72"
+            placeholder="Mínimo 8 caracteres"
+            autocomplete="new-password"
+        >
+        <small id="ayudaContrasena">
+            Obligatoria al crear una cuenta. Al editar, déjala vacía si no deseas cambiarla.
+        </small>
+    </div>
+
+    <div class="modal-acciones">
+        <button
+            type="button"
+            class="boton boton-secundario"
+            id="btnCancelarUsuario"
+        >
+            Cancelar
+        </button>
+
+        <button
+            type="submit"
+            class="boton boton-principal"
+            id="btnGuardarUsuario"
+        >
+            <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+            <span>Guardar usuario</span>
+        </button>
+    </div>
+
+</form>
+
+
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN DE ELIMINACIÓN -->
+    <div
+        class="modal"
+        id="modalEliminarUsuario"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloEliminarUsuario"
+        hidden
+    >
+        <div class="modal-contenido modal-confirmacion">
+
+            <div class="confirmacion-icono">
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+            </div>
+
+            <h2 id="tituloEliminarUsuario">¿Eliminar usuario?</h2>
+
+            <p id="mensajeEliminarUsuario">
+                Esta acción puede ser irreversible. Confirma que deseas
+                eliminar este registro.
+            </p>
+
+            <div class="modal-acciones">
+                <button
+                    type="button"
+                    class="boton boton-secundario"
+                    id="btnCancelarEliminar"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="boton boton-peligro"
+                    id="btnConfirmarEliminar"
+                >
+                    <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                    <span>Eliminar</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

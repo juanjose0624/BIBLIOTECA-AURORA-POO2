@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Panel administrativo para la gestión de solicitudes PQRS de Aurora Libris."
+    >
+
+    <title>Gestión de PQRS | Aurora Libris</title>
+
+    <link
+        rel="icon"
+        href="/iconos/favicon.svg"
+        type="image/svg+xml"
+    >
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+
+    <link
+        rel="stylesheet"
+        href="/css/pqrs_crud.css"
+    >
+
+    <script
+        src="/js/pqrs_crud.js"
+        defer
+    ></script>
+</head>
+
+<body>
+    <div class="aplicacion">
+
+        <!-- Navegación lateral -->
+       
+<aside class="barra-lateral" id="barraLateral">
+    <a
+        class="marca"
+        href="/dashboards/administrador.html"
+        aria-label="Volver al panel de administración"
+    >
+        <span class="marca-icono" aria-hidden="true">A</span>
+
+        <span class="marca-texto">
+            <strong>Aurora Libris</strong>
+            <small>Administración</small>
+        </span>
+    </a>
+
+    <nav class="navegacion" aria-label="Navegación administrativa">
+        <p class="navegacion-titulo">MENÚ PRINCIPAL</p>
+
+        <a
+            class="enlace-nav"
+            href="/dashboards/administrador.html"
+        >
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+            <span>Panel principal</span>
+        </a>
+
+        <a
+            class="enlace-nav activo"
+            href="/cruds/pqrs.html"
+            aria-current="page"
+        >
+            <i class="fa-solid fa-inbox" aria-hidden="true"></i>
+            <span>Gestión de PQRS</span>
+        </a>
+
+        <a class="enlace-nav" href="/cruds/usuarios.html">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            <span>Gestión de usuarios</span>
+        </a>
+
+        <a class="enlace-nav" href="/cruds/estadisticas.html">
+            <i class="fa-solid fa-chart-column" aria-hidden="true"></i>
+            <span>Gestión de estadísticas</span>
+        </a>
+
+        <a class="enlace-nav" href="/cruds/solicitudes.html">
+            <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
+            <span>Gestión de solicitudes</span>
+        </a>
+
+        <a class="enlace-nav" href="/cruds/libros.html">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+            <span>Gestión de libros</span>
+        </a>
+    </nav>
+
+    <div class="barra-lateral-inferior">
+        <a
+            class="enlace-nav"
+            href="/dashboards/administrador.html"
+        >
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            <span>Volver al panel</span>
+        </a>
+    </div>
+</aside>
+
+        <!-- Contenido principal -->
+        <main class="contenido-principal">
+
+            <!-- Encabezado -->
+            <header class="encabezado">
+                <div class="encabezado-izquierda">
+                    <button
+                        class="boton-menu"
+                        id="botonMenu"
+                        type="button"
+                        aria-label="Abrir o cerrar el menú"
+                        aria-controls="barraLateral"
+                        aria-expanded="false"
+                    >
+                        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                    </button>
+
+                    <div>
+                        <p class="miga-pan">Administración / PQRS</p>
+                        <h1>Gestión de PQRS</h1>
+                        <p class="subtitulo">
+                            Consulta, administra y responde las solicitudes
+                            de los usuarios.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="encabezado-derecha">
+                    <span class="etiqueta-rol">
+                        <i class="fa-solid fa-shield-halved"
+                           aria-hidden="true"></i>
+                        Administrador
+                    </span>
+                </div>
+            </header>
+
+            <!-- Resumen -->
+            <section
+                class="resumen-pqrs"
+                aria-label="Resumen de solicitudes"
+            >
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono total">
+                        <i class="fa-solid fa-inbox" aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <p>Total de solicitudes</p>
+                        <strong id="totalSolicitudes">—</strong>
+                        <small>Registros encontrados</small>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono pendientes">
+                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <p>Pendientes</p>
+                        <strong id="totalPendientes">—</strong>
+                        <small>Requieren atención</small>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono respondidas">
+                        <i class="fa-solid fa-check-double"
+                           aria-hidden="true"></i>
+                    </div>
+
+                    <div>
+                        <p>Respondidas</p>
+                        <strong id="totalRespondidas">—</strong>
+                        <small>Solicitudes gestionadas</small>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Gestión de solicitudes -->
+            <section class="panel-pqrs">
+                <div class="panel-encabezado">
+                    <div>
+                        <h2>Solicitudes recibidas</h2>
+                        <p>
+                            Revisa cada solicitud y selecciona la acción
+                            correspondiente.
+                        </p>
+                    </div>
+
+                    <button
+                        class="boton-secundario"
+                        id="botonActualizar"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                        Actualizar
+                    </button>
+                </div>
+
+                <!-- Búsqueda y filtros -->
+                <form class="filtros-pqrs" id="formFiltros">
+                    <div class="campo-busqueda">
+                        <label for="buscarPqrs">Buscar solicitudes</label>
+
+                        <div class="entrada-busqueda">
+                            <i class="fa-solid fa-magnifying-glass"
+                               aria-hidden="true"></i>
+
+                            <input
+                                type="search"
+                                id="buscarPqrs"
+                                name="buscar"
+                                placeholder="Nombre, correo o mensaje..."
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="campo-filtro">
+                        <label for="filtroTipo">Tipo de solicitud</label>
+
+                        <select id="filtroTipo" name="tipo">
+                            <option value="">Todos los tipos</option>
+                            <option value="peticion">Petición</option>
+                            <option value="queja">Queja</option>
+                            <option value="reclamo">Reclamo</option>
+                            <option value="sugerencia">Sugerencia</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-filtro">
+                        <label for="filtroEstado">Estado</label>
+
+                        <select id="filtroEstado" name="estado">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en_revision">En revisión</option>
+                            <option value="respondida">Respondida</option>
+                        </select>
+                    </div>
+
+                    <button
+                        class="boton-secundario boton-limpiar"
+                        id="botonLimpiarFiltros"
+                        type="reset"
+                    >
+                        Limpiar
+                    </button>
+                </form>
+
+                <!-- Tabla -->
+                <div class="tabla-contenedor">
+                    <table class="tabla-pqrs">
+                        <caption class="solo-lectores">
+                            Listado de solicitudes PQRS registradas.
+                        </caption>
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Solicitud</th>
+                                <th scope="col">Solicitante</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaSolicitudes">
+                            <tr>
+                                <td colspan="6" class="estado-tabla">
+                                    Las solicitudes se cargarán desde el
+                                    servidor.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginación -->
+                <div class="paginacion">
+                    <p id="informacionPaginacion">
+                        Esperando solicitudes...
+                    </p>
+
+                    <div class="paginacion-controles">
+                        <button
+                            type="button"
+                            id="paginaAnterior"
+                            class="boton-pagina"
+                            disabled
+                            aria-label="Página anterior"
+                        >
+                            <i class="fa-solid fa-chevron-left"
+                               aria-hidden="true"></i>
+                        </button>
+
+                        <span id="paginaActual" aria-live="polite">1</span>
+
+                        <button
+                            type="button"
+                            id="paginaSiguiente"
+                            class="boton-pagina"
+                            disabled
+                            aria-label="Página siguiente"
+                        >
+                            <i class="fa-solid fa-chevron-right"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="pie-pagina">
+                <p>Aurora Libris · Gestión administrativa de PQRS</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Modal para consultar los detalles -->
+    <dialog
+        class="modal-pqrs"
+        id="modalDetalles"
+        aria-labelledby="tituloDetalles"
+    >
+        <div class="modal-encabezado">
+            <div>
+                <p class="miga-pan">Solicitud recibida</p>
+                <h2 id="tituloDetalles">Detalles de la PQRS</h2>
+            </div>
+
+            <button
+                type="button"
+                class="boton-cerrar"
+                data-cerrar-modal
+                aria-label="Cerrar detalles"
+            >
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div class="modal-contenido" id="contenidoDetalles">
+            <!-- El JavaScript insertará aquí los datos de la solicitud. -->
+        </div>
+
+        <div class="modal-acciones">
+            <button
+                type="button"
+                class="boton-secundario"
+                data-cerrar-modal
+            >
+                Cerrar
+            </button>
+
+            <button
+                type="button"
+                class="boton-primario"
+                id="botonResponderDesdeDetalle"
+            >
+                <i class="fa-solid fa-reply" aria-hidden="true"></i>
+                Gestionar respuesta
+            </button>
+        </div>
+    </dialog>
+
+    <!-- Modal para editar el estado y responder -->
+    <dialog
+        class="modal-pqrs"
+        id="modalGestion"
+        aria-labelledby="tituloGestion"
+    >
+        <form id="formGestion">
+            <div class="modal-encabezado">
+                <div>
+                    <p class="miga-pan">Gestión administrativa</p>
+                    <h2 id="tituloGestion">Gestionar solicitud</h2>
+                </div>
+
+                <button
+                    type="button"
+                    class="boton-cerrar"
+                    data-cerrar-modal
+                    aria-label="Cerrar formulario"
+                >
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="modal-contenido">
+                <input type="hidden" id="gestionId" name="id">
+
+                <div class="campo-formulario">
+                    <label for="gestionEstado">Estado de la solicitud</label>
+
+                    <select id="gestionEstado" name="estado" required>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en_revision">En revisión</option>
+                        <option value="respondida">Respondida</option>
+                    </select>
+                </div>
+
+                <div class="campo-formulario">
+                    <label for="gestionRespuesta">Respuesta al solicitante</label>
+
+                    <textarea
+                        id="gestionRespuesta"
+                        name="respuesta"
+                        rows="6"
+                        maxlength="5000"
+                        placeholder="Escribe aquí la respuesta a la solicitud..."
+                    ></textarea>
+
+                    <small>
+                        La respuesta y el estado se guardarán en el servidor.
+                    </small>
+                </div>
+
+                <p
+                    class="mensaje-formulario"
+                    id="mensajeGestion"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+            </div>
+
+            <div class="modal-acciones">
+                <button
+                    type="button"
+                    class="boton-secundario"
+                    data-cerrar-modal
+                >
+                    Cancelar
+                </button>
+
+                <button type="submit" class="boton-primario" id="botonGuardarGestion">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Modal de confirmación para eliminar -->
+    <dialog
+        class="modal-pqrs modal-confirmacion"
+        id="modalEliminar"
+        aria-labelledby="tituloEliminar"
+    >
+        <div class="modal-contenido">
+            <div class="confirmacion-icono">
+                <i class="fa-solid fa-triangle-exclamation"
+                   aria-hidden="true"></i>
+            </div>
+
+            <h2 id="tituloEliminar">¿Eliminar esta solicitud?</h2>
+
+            <p>
+                Esta acción eliminará el registro de la base de datos.
+                No podrás deshacerla desde esta pantalla.
+            </p>
+
+            <p
+                class="mensaje-formulario"
+                id="mensajeEliminar"
+                role="status"
+                aria-live="polite"
+            ></p>
+        </div>
+
+        <div class="modal-acciones">
+            <button
+                type="button"
+                class="boton-secundario"
+                data-cerrar-modal
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton-peligro"
+                id="botonConfirmarEliminar"
+            >
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+                Eliminar solicitud
+            </button>
+        </div>
+    </dialog>
+
+</body>
+</html>
