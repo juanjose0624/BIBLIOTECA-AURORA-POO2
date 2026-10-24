@@ -121,3 +121,8 @@ def servir_crud_pqrs():
 def servir_crud_usuarios():
     """Sirve el CRUD de usuarios exclusivamente a administradores."""
     return _servir_crud_administrativo("usuarios.html")
+
+@paginas_bp.get("/cruds/libros.html")
+def servir_crud_libros():
+    """Sirve el CRUD de libros exclusivamente a administradores."""
+    return _servir_crud_administrativo("libros.html")

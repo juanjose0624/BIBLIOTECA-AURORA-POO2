@@ -1,0 +1,498 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101827">
+
+    <title>Gestión de libros | Aurora Libris</title>
+
+    <link rel="stylesheet" href="/css/libros_crud.css">
+    <link rel="icon" type="image/svg+xml" href="/iconos/favicon.svg">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="/js/nav.js" defer></script>
+    <script src="/js/libros_crud.js" defer></script>
+</head>
+
+<body>
+    <div class="aplicacion">
+
+        <!-- Navegación lateral -->
+        <aside class="barra-lateral">
+            <a href="/dashboards/administrador.html" class="marca">
+                <span class="marca-icono">
+                    <i class="fa-solid fa-book-open"></i>
+                </span>
+
+                <span class="marca-texto">
+                    <strong>Aurora</strong>
+                    <small>LIBRIS</small>
+                </span>
+            </a>
+
+            <div class="perfil-biblioteca">
+                <div class="perfil-avatar">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <div class="perfil-informacion">
+                    <strong>Administración</strong>
+                    <span>Panel de gestión</span>
+                </div>
+            </div>
+
+            <nav class="menu-lateral" aria-label="Menú principal">
+                <span class="menu-titulo">GENERAL</span>
+
+                <a href="/dashboards/administrador.html" class="menu-enlace">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Inicio</span>
+                </a>
+
+                <a href="/cruds/usuarios.html" class="menu-enlace">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Usuarios</span>
+                </a>
+
+                <a href="/cruds/libros.html"
+                   class="menu-enlace activo"
+                   aria-current="page">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Libros</span>
+                </a>
+
+                <a href="/cruds/pqrs.html" class="menu-enlace">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                    <span>PQRS</span>
+                </a>
+<a href="/cruds/solicitudes.html" class="menu-enlace">
+    <i class="fa-solid fa-inbox"></i>
+    <span>Solicitudes</span>
+</a>
+                <span class="menu-titulo">SISTEMA</span>
+
+                <a href="/cruds/estadisticas.html" class="menu-enlace">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Estadísticas</span>
+                </a>
+            </nav>
+
+            <div class="lateral-pie">
+                <div class="estado-sistema">
+                    <span class="estado-indicador"></span>
+                    <span>Sistema de biblioteca</span>
+                </div>
+
+                <button type="button" id="btnCerrarSesion"
+                        class="boton-cerrar-sesion">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="contenido-principal">
+
+            <header class="encabezado">
+                <div class="encabezado-titulo">
+                    <span class="ruta-pagina">
+                        ADMINISTRACIÓN / CATÁLOGO
+                    </span>
+
+                    <h1>Gestión de libros</h1>
+
+                    <p>
+                        Administra el catálogo, organiza las publicaciones
+                        y mantén actualizada la colección de la biblioteca.
+                    </p>
+                </div>
+
+                <div class="encabezado-acciones">
+                    <span class="fecha-actual" id="fechaActual"></span>
+
+                    <button type="button" class="boton-principal"
+                            id="btnNuevoLibro">
+                        <i class="fa-solid fa-plus"></i>
+                        Registrar libro
+                    </button>
+                </div>
+            </header>
+
+            <!-- Indicadores -->
+            <section class="resumen-libros"
+                     aria-label="Resumen del catálogo">
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-lila">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div>
+                        <span>Total de libros</span>
+                        <strong id="totalLibros">—</strong>
+                        <small>Libros registrados</small>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-azul">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+
+                    <div>
+                        <span>Unidades disponibles</span>
+                        <strong id="librosDisponibles">—</strong>
+                        <small>Según el inventario</small>
+                    </div>
+                </article>
+
+                <article class="tarjeta-resumen">
+                    <div class="resumen-icono icono-verde">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+
+                    <div>
+                        <span>Referencias activas</span>
+                        <strong id="librosActivos">—</strong>
+                        <small>En el catálogo</small>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Catálogo -->
+            <section class="panel-catalogo">
+
+                <div class="panel-encabezado">
+                    <div>
+                        <h2>Catálogo bibliográfico</h2>
+                        <p>Consulta y administra los libros registrados.</p>
+                    </div>
+
+                    <button type="button" class="boton-secundario"
+                            id="btnActualizar">
+                        <i class="fa-solid fa-rotate"></i>
+                        Actualizar
+                    </button>
+                </div>
+
+                <!-- Búsqueda y filtros -->
+                <div class="filtros-catalogo">
+                    <div class="buscador">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="search"
+                            id="buscarLibro"
+                            placeholder="Buscar por título, autor o ISBN..."
+                            aria-label="Buscar libros"
+                        >
+                    </div>
+
+                    <select id="filtroEstado" aria-label="Filtrar por estado">
+                        <option value="">Todos los estados</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+
+                    <select id="filtroOrden" aria-label="Ordenar libros">
+                        <option value="recientes">Más recientes</option>
+                        <option value="titulo">Título A-Z</option>
+                        <option value="autor">Autor A-Z</option>
+                    </select>
+                </div>
+
+                <!-- Tabla de libros -->
+                <div class="tabla-contenedor">
+                    <table class="tabla-libros">
+                        <thead>
+                            <tr>
+                                <th scope="col">LIBRO</th>
+                                <th scope="col">AUTOR</th>
+                                <th scope="col">ISBN</th>
+                                <th scope="col">CATEGORÍA</th>
+                                <th scope="col">EJEMPLARES</th>
+                                <th scope="col">ESTADO</th>
+                                <th scope="col">ACCIONES</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaLibros">
+                            <tr>
+                                <td colspan="7" class="estado-tabla">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                    Cargando catálogo...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginación -->
+                <footer class="tabla-pie">
+                    <span id="infoPaginacion">
+                        Consultando registros...
+                    </span>
+
+                    <div class="paginacion">
+                        <button type="button" id="paginaAnterior"
+                                aria-label="Página anterior" disabled>
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <span id="paginaActual">1</span>
+
+                        <button type="button" id="paginaSiguiente"
+                                aria-label="Página siguiente" disabled>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </footer>
+
+            </section>
+
+            <footer class="pie-pagina">
+                <span>Aurora Libris · Gestión bibliotecaria</span>
+                <span>Organizando conocimiento, construyendo futuro.</span>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Modal para crear y editar libros -->
+    <div class="modal" id="modalLibro"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="tituloModal"
+         aria-hidden="true"
+         hidden>
+
+        <div class="modal-fondo" data-cerrar-modal></div>
+
+        <section class="modal-contenido">
+            <header class="modal-encabezado">
+                <div>
+                    <span class="modal-etiqueta">CATÁLOGO BIBLIOGRÁFICO</span>
+                    <h2 id="tituloModal">Registrar libro</h2>
+                    <p id="descripcionModal">
+                        Completa la información de la publicación.
+                    </p>
+                </div>
+
+                <button type="button" class="boton-icono"
+                        id="btnCerrarModal"
+                        aria-label="Cerrar formulario">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+
+            <form id="formularioLibro">
+
+                <input type="hidden" id="libroId" name="id">
+
+                <div class="formulario-grid">
+
+                    <div class="campo campo-completo">
+                        <label for="titulo">Título del libro *</label>
+
+                        <input
+                            type="text"
+                            id="titulo"
+                            name="titulo"
+                            placeholder="Ej. Cien años de soledad"
+                            maxlength="250"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="autor">Autor *</label>
+
+                        <input
+                            type="text"
+                            id="autor"
+                            name="autor"
+                            placeholder="Nombre del autor"
+                            maxlength="200"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="isbn">ISBN</label>
+
+                        <input
+                            type="text"
+                            id="isbn"
+                            name="isbn"
+                            placeholder="978-..."
+                            maxlength="20"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="editorial">Editorial</label>
+
+                        <input
+                            type="text"
+                            id="editorial"
+                            name="editorial"
+                            placeholder="Nombre de la editorial"
+                            maxlength="150"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="categoria">Categoría</label>
+
+                        <input
+                            type="text"
+                            id="categoria"
+                            name="categoria"
+                            placeholder="Ej. Literatura"
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="anioPublicacion">
+                            Año de publicación
+                        </label>
+
+                        <input
+                            type="number"
+                            id="anioPublicacion"
+                            name="anio_publicacion"
+                            placeholder="Ej. 1967"
+                            min="1"
+                            max="9999"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="cantidad">Cantidad de ejemplares *</label>
+
+                        <input
+                            type="number"
+                            id="cantidad"
+                            name="cantidad"
+                            min="0"
+                            step="1"
+                            value="1"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="ubicacion">Ubicación</label>
+
+                        <input
+                            type="text"
+                            id="ubicacion"
+                            name="ubicacion"
+                            placeholder="Ej. Estante A-03"
+                            maxlength="100"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="estado">Estado del libro *</label>
+
+                        <select id="estado" name="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="campo campo-completo">
+                        <label for="descripcion">Descripción</label>
+
+                        <textarea
+                            id="descripcion"
+                            name="descripcion"
+                            rows="3"
+                            maxlength="2000"
+                            placeholder="Breve descripción de la obra..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <p class="nota-formulario">
+                    Los campos marcados con * son obligatorios.
+                </p>
+
+                <footer class="modal-acciones">
+                    <button type="button" class="boton-secundario"
+                            id="btnCancelar">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="boton-principal"
+                            id="btnGuardarLibro">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar libro
+                    </button>
+                </footer>
+
+            </form>
+        </section>
+    </div>
+
+    <!-- Modal de consulta -->
+    <div class="modal" id="modalDetalleLibro"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="tituloDetalle"
+         aria-hidden="true"
+         hidden>
+
+        <div class="modal-fondo" data-cerrar-detalle></div>
+
+        <section class="modal-contenido modal-detalle">
+            <header class="modal-encabezado">
+                <div>
+                    <span class="modal-etiqueta">FICHA BIBLIOGRÁFICA</span>
+                    <h2 id="tituloDetalle">Detalle del libro</h2>
+                </div>
+
+                <button type="button" class="boton-icono"
+                        id="btnCerrarDetalle"
+                        aria-label="Cerrar detalle">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
+
+            <div id="contenidoDetalle" class="contenido-detalle">
+                <!-- El JavaScript insertará los datos del libro. -->
+            </div>
+
+            <footer class="modal-acciones">
+                <button type="button" class="boton-secundario"
+                        id="btnCerrarDetallePie">
+                    Cerrar
+                </button>
+
+                <button type="button" class="boton-principal"
+                        id="btnEditarDesdeDetalle">
+                    <i class="fa-solid fa-pen"></i>
+                    Editar libro
+                </button>
+            </footer>
+        </section>
+    </div>
+
+</body>
+</html>
