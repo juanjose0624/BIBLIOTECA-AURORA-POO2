@@ -1,6 +1,10 @@
 
-"""Rutas de estadísticas generales para el panel administrativo."""
+"""Módulo de rutas de estadísticas generales de Aurora Libris.
 
+Obtiene y proporciona al panel administrativo estadísticas
+actualizadas sobre usuarios, libros, ejemplares disponibles,
+préstamos y solicitudes PQRS mediante consultas a PostgreSQL.
+"""
 from flask import Blueprint, current_app, jsonify
 
 from db import obtener_conexion

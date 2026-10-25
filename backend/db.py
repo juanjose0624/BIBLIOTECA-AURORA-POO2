@@ -1,4 +1,10 @@
-"""Conexión a PostgreSQL."""
+"""Módulo de conexión a la base de datos PostgreSQL de Aurora Libris.
+
+Centraliza la creación de conexiones mediante psycopg y utiliza
+los parámetros definidos en la configuración de la aplicación.
+Permite gestionar las transacciones y cerrar las conexiones
+de forma segura mediante el uso de bloques `with`.
+"""
 import psycopg
 
 from config import Config

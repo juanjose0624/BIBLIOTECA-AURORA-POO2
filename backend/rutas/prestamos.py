@@ -1,6 +1,11 @@
 
-"""Rutas para solicitudes, préstamos y sanciones."""
+"""Módulo de rutas para solicitudes, préstamos y sanciones de Aurora Libris.
 
+Gestiona la creación y consulta de solicitudes por parte de los usuarios,
+así como la aprobación, el rechazo, la devolución de préstamos y el registro
+de sanciones por parte de los administradores, mediante validaciones
+y respuestas JSON para la API.
+"""
 from flask import Blueprint, jsonify, request, session
 
 from servicios.permisos import requiere_admin

@@ -1,5 +1,9 @@
 
-"""Operaciones de acceso a datos para PQRS."""
+"""Repositorio de acceso a datos para las PQRS.
+
+Centraliza las consultas SQL para registrar, listar, actualizar
+y eliminar peticiones, quejas, reclamos y sugerencias.
+"""
 
 from db import obtener_conexion
 
@@ -35,7 +39,7 @@ class PqrsRepositorio:
                 return resultado[0]
 
     def listar(self):
-        """Devuelve todas las solicitudes, de la más reciente a la más antigua."""
+        """Devuelve las solicitudes de la más reciente a la más antigua."""
         with obtener_conexion() as conexion:
             filas = conexion.execute(
                 """

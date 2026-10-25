@@ -1,6 +1,10 @@
 
-"""Rutas del CRUD de libros, exclusivas para administradores."""
+"""Módulo de rutas del CRUD de libros de Aurora Libris.
 
+Gestiona la consulta, creación, actualización y eliminación
+de libros mediante la API, restringiendo las operaciones
+de modificación a los usuarios con rol de administrador.
+"""
 from flask import Blueprint, jsonify, request
 
 from servicios.permisos import requiere_admin

@@ -1,6 +1,10 @@
 
-"""Endpoints públicos y administrativos para PQRS."""
+"""Módulo de rutas para la gestión de PQRS de Aurora Libris.
 
+Permite registrar solicitudes públicamente y consultar, actualizar
+o eliminar PQRS desde el panel administrativo, verificando los permisos
+de acceso y gestionando los errores de las operaciones.
+"""
 from functools import wraps
 
 from flask import (

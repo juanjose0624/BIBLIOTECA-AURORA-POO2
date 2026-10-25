@@ -1,4 +1,10 @@
-"""Servicio: las reglas del inicio de sesión."""
+"""Servicio de autenticación de Aurora Libris.
+
+Verifica las credenciales de los usuarios mediante hashes seguros
+con bcrypt, valida el rol solicitado y aplica medidas para reducir
+la posibilidad de identificar cuentas mediante respuestas o tiempos
+de autenticación diferentes.
+"""
 import bcrypt
 
 from repositorios.usuario_repositorio import UsuarioRepositorio

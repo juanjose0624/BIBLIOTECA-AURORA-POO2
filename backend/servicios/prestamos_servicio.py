@@ -1,6 +1,11 @@
 
-"""Lógica de negocio para solicitudes, préstamos y sanciones."""
+"""Servicio de gestión de solicitudes, préstamos y sanciones de Aurora Libris.
 
+Centraliza las reglas de negocio para crear y consultar solicitudes,
+aprobarlas o rechazarlas, registrar devoluciones y gestionar sanciones.
+Valida identificadores, fechas y datos recibidos antes de ejecutar
+las operaciones correspondientes en el repositorio.
+"""
 from datetime import date
 
 from repositorios.prestamo_repositorio import PrestamoRepositorio

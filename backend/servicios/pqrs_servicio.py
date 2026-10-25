@@ -1,6 +1,11 @@
 
-"""Validación y lógica de negocio para PQRS."""
+"""Servicio de gestión y validación de PQRS de Aurora Libris.
 
+Centraliza las reglas de negocio para registrar, consultar,
+actualizar y eliminar peticiones, quejas, reclamos y sugerencias,
+validando los datos de contacto, el contenido de los mensajes,
+los estados de las solicitudes y las respuestas administrativas.
+"""
 import re
 
 from repositorios.pqrs_repositorio import PqrsRepositorio

@@ -1,4 +1,3 @@
-
 (() => {
   'use strict';
 
@@ -89,11 +88,63 @@
     return `${anio}-${mes}-${diaMes}`;
   };
 
-  const mostrarMensaje = mensaje => window.alert(mensaje);
+  // ------------------------------------------------------------
+  // Notificaciones SweetAlert2
+  // ------------------------------------------------------------
+
+  const estiloSwal = () => {
+    const claro = raiz.dataset.tema === 'claro';
+
+    return {
+      confirmButtonColor: '#7C5CF2',
+      background: claro ? '#FFFFFF' : '#111A4A',
+      color: claro ? '#1E2350' : '#E9EDFF'
+    };
+  };
+
+  const mostrarMensaje = (mensaje, tipo = 'info') => {
+    const configuraciones = {
+      success: {
+        icon: 'success',
+        title: '¡Listo!',
+        confirmButtonText: 'Continuar'
+      },
+      error: {
+        icon: 'error',
+        title: 'Algo salió mal',
+        confirmButtonText: 'Entendido'
+      },
+      warning: {
+        icon: 'warning',
+        title: 'Atención',
+        confirmButtonText: 'Entendido'
+      },
+      info: {
+        icon: 'info',
+        title: 'Información',
+        confirmButtonText: 'Entendido'
+      }
+    };
+
+    const configuracion = configuraciones[tipo] ?? configuraciones.info;
+
+    return Swal.fire({
+      ...estiloSwal(),
+      title: configuracion.title,
+      text: mensaje,
+      icon: configuracion.icon,
+      confirmButtonText: configuracion.confirmButtonText,
+      allowOutsideClick: false,
+      customClass: {
+        popup: 'aurora-alerta',
+        confirmButton: 'aurora-alerta-confirmar'
+      }
+    });
+  };
 
   const mostrarError = (mensaje, error) => {
     console.error(mensaje, error);
-    mostrarMensaje(mensaje);
+    return mostrarMensaje(mensaje, 'error');
   };
 
   async function solicitarAPI(url, opciones = {}) {
@@ -108,7 +159,10 @@
     });
 
     if (respuesta.status === 401) {
-      mostrarMensaje('Tu sesión ha finalizado. Inicia sesión nuevamente.');
+      await mostrarMensaje(
+        'Tu sesión ha finalizado. Inicia sesión nuevamente.',
+        'warning'
+      );
       window.location.replace('/');
       throw new Error('Sesión no válida.');
     }
@@ -666,17 +720,26 @@
       if (!libro) return;
 
       if (activos().length >= MAX_PRESTAMOS) {
-        mostrarMensaje('Ya tienes el máximo de tres solicitudes o préstamos activos.');
+        mostrarMensaje(
+          'Ya tienes el máximo de tres solicitudes o préstamos activos.',
+          'warning'
+        );
         return;
       }
 
       if (!libro.disp) {
-        mostrarMensaje('Este libro no tiene ejemplares disponibles.');
+        mostrarMensaje(
+          'Este libro no tiene ejemplares disponibles.',
+          'warning'
+        );
         return;
       }
 
       if (activos().some(p => p.id === libroId)) {
-        mostrarMensaje('Ya tienes una solicitud o préstamo para este libro.');
+        mostrarMensaje(
+          'Ya tienes una solicitud o préstamo para este libro.',
+          'warning'
+        );
         return;
       }
 
@@ -689,8 +752,9 @@
           body: JSON.stringify({ libro_id: libroId })
         });
 
-        mostrarMensaje(
-          'Tu solicitud fue registrada. Podrás consultar su estado aquí cuando la biblioteca responda.'
+        await mostrarMensaje(
+          'Tu solicitud fue registrada. Podrás consultar su estado aquí cuando la biblioteca responda.',
+          'success'
         );
 
         await Promise.all([
@@ -700,7 +764,7 @@
 
         pintarTodo();
       } catch (error) {
-        mostrarError(
+        await mostrarError(
           error.message || 'No fue posible registrar la solicitud.',
           error
         );

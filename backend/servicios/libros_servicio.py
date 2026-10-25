@@ -1,6 +1,10 @@
 
-"""Servicio: validaciones y reglas de negocio de los libros."""
+"""Servicio de gestión de libros de Aurora Libris.
 
+Centraliza las reglas de negocio y validaciones para listar,
+buscar, crear, actualizar y eliminar libros, garantizando
+la integridad de los datos antes de interactuar con el repositorio.
+"""
 from modelos.libro import Libro
 
 

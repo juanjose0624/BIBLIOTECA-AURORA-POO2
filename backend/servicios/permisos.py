@@ -1,6 +1,11 @@
 
-"""Decoradores para proteger rutas según la sesión y el rol."""
+"""Módulo de permisos para proteger las rutas de Aurora Libris.
 
+Proporciona decoradores que verifican la existencia de una sesión
+válida y el rol del usuario antes de permitir el acceso a operaciones
+exclusivas para administradores, devolviendo respuestas JSON
+cuando la autenticación o los permisos son insuficientes.
+"""
 from functools import wraps
 
 from flask import jsonify, session

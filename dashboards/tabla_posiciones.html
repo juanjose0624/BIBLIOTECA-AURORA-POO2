@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="oscuro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabla de posiciones · Aurora Libris</title>
+
+  <!-- Aplica el tema guardado antes de pintar para evitar parpadeos -->
+  <script>
+    try {
+      const tema = localStorage.getItem('aurora_tema');
+      if (tema === 'claro' || tema === 'oscuro') {
+        document.documentElement.dataset.tema = tema;
+      }
+    } catch (e) { /* almacenamiento bloqueado */ }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" type="image/svg+xml" href="/iconos/favicon.svg">
+
+  <link rel="stylesheet" href="/css/tabla_posiciones.css">
+</head>
+
+<body class="pagina-posiciones">
+  <div class="cielo" aria-hidden="true"></div>
+
+  <main class="contenedor-posiciones">
+
+    <!-- ===================== ENCABEZADO ===================== -->
+    <header class="encabezado-posiciones">
+      <div class="encabezado-texto">
+        <a class="volver" id="btnVolver" href="#">
+          <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          Volver al panel
+        </a>
+
+        <span class="etiqueta-seccion">
+          <i class="bi bi-trophy" aria-hidden="true"></i>
+          TABLA DE POSICIONES
+        </span>
+
+        <h1>Los lectores de Aurora</h1>
+        <p>
+          Cada libro que marcas como leído suma puntos. Sube de nivel,
+          escala posiciones y compite con los demás lectores de la biblioteca.
+        </p>
+      </div>
+
+      <div class="encabezado-acciones">
+        <button type="button" class="btn-icono" id="btnTema" aria-label="Cambiar tema">
+          <i class="bi bi-circle-half" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn-actualizar" id="btnActualizar">
+          <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+          Actualizar
+        </button>
+      </div>
+    </header>
+
+    <p class="estado-conexion" id="estado-conexion" role="status">
+      <span class="estado-punto"></span>
+      Conectando con el servidor...
+    </p>
+
+    <!-- ===================== TU POSICIÓN ===================== -->
+    <section class="tu-posicion" id="tu-posicion" aria-labelledby="titulo-tu-posicion">
+      <div class="tu-posicion-avatar" id="tu-avatar" aria-hidden="true">
+        <i class="bi bi-person"></i>
+      </div>
+
+      <div class="tu-posicion-info">
+        <span class="mini-etiqueta" id="titulo-tu-posicion">TU POSICIÓN</span>
+        <strong id="tu-nombre">Cargando…</strong>
+        <span class="nivel-chip" id="tu-nivel">
+          <i class="bi bi-stars" aria-hidden="true"></i>
+          <span>—</span>
+        </span>
+      </div>
+
+      <div class="tu-posicion-datos">
+        <div>
+          <span>Puesto</span>
+          <strong id="tu-puesto">—</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="tu-puntos">—</strong>
+        </div>
+        <div>
+          <span>Libros leídos</span>
+          <strong id="tu-libros">—</strong>
+        </div>
+      </div>
+
+      <div class="tu-posicion-progreso">
+        <div class="progreso-textos">
+          <span id="progreso-texto">Calculando tu progreso…</span>
+          <span id="progreso-porcentaje">0%</span>
+        </div>
+        <div class="barra-progreso"
+             role="progressbar"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             aria-valuenow="0"
+             id="barra-progreso">
+          <span id="barra-progreso-relleno"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMEN ===================== -->
+    <section class="resumen-posiciones" aria-label="Resumen de la comunidad">
+      <article class="tarjeta-resumen tarjeta-lectores">
+        <span class="resumen-icono"><i class="bi bi-people" aria-hidden="true"></i></span>
+        <div class="resumen-contenido">
+          <span class="resumen-etiqueta">Lectores registrados</span>
+          <strong id="total-lectores">0</strong>
+        </div>
+      </article>
+
+      <article class="tarjeta-resumen tarjeta-libros">
+        <span class="resumen-icono"><i class="bi bi-book" aria-hidden="true"></i></span>
+        <div class="resumen-contenido">
+          <span class="resumen-etiqueta">Libros leídos</span>
+          <strong id="total-libros-leidos">0</strong>
+        </div>
+      </article>
+
+      <article class="tarjeta-resumen tarjeta-puntos">
+        <span class="resumen-icono"><i class="bi bi-lightning-charge" aria-hidden="true"></i></span>
+        <div class="resumen-contenido">
+          <span class="resumen-etiqueta">Puntos acumulados</span>
+          <strong id="total-puntos">0</strong>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===================== PODIO ===================== -->
+    <section class="podio-seccion" aria-labelledby="titulo-podio">
+      <h2 id="titulo-podio">Podio</h2>
+
+      <div class="podio" id="podio">
+        <!-- El orden visual es 2.º · 1.º · 3.º; JavaScript rellena cada puesto -->
+        <article class="podio-puesto puesto-2" id="podio-2">
+          <span class="podio-medalla"><i class="bi bi-2-circle-fill" aria-hidden="true"></i></span>
+          <div class="podio-avatar">—</div>
+          <strong class="podio-nombre">Sin lector</strong>
+          <span class="podio-puntos">0 pts</span>
+          <div class="podio-base"><span>2</span></div>
+        </article>
+
+        <article class="podio-puesto puesto-1" id="podio-1">
+          <span class="podio-corona"><i class="bi bi-trophy-fill" aria-hidden="true"></i></span>
+          <div class="podio-avatar">—</div>
+          <strong class="podio-nombre">Sin lector</strong>
+          <span class="podio-puntos">0 pts</span>
+          <div class="podio-base"><span>1</span></div>
+        </article>
+
+        <article class="podio-puesto puesto-3" id="podio-3">
+          <span class="podio-medalla"><i class="bi bi-3-circle-fill" aria-hidden="true"></i></span>
+          <div class="podio-avatar">—</div>
+          <strong class="podio-nombre">Sin lector</strong>
+          <span class="podio-puntos">0 pts</span>
+          <div class="podio-base"><span>3</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== CLASIFICACIÓN ===================== -->
+    <section class="panel-posiciones" aria-labelledby="titulo-clasificacion">
+      <div class="panel-encabezado">
+        <div>
+          <h2 id="titulo-clasificacion">Clasificación general</h2>
+          <p>Ordenada por puntos. En caso de empate, gana quien haya leído más libros.</p>
+        </div>
+        <span class="contador-registros" id="contador-registros">0 lectores</span>
+      </div>
+
+      <div class="filtros-posiciones">
+        <div class="campo-busqueda">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <input type="search"
+                 id="buscar-lector"
+                 placeholder="Buscar lector por nombre…"
+                 autocomplete="off"
+                 aria-label="Buscar lector">
+        </div>
+
+        <div class="campo-filtro">
+          <label for="filtro-nivel">Nivel</label>
+          <select id="filtro-nivel">
+            <option value="todos">Todos los niveles</option>
+            <option value="semilla">Semilla</option>
+            <option value="lector">Lector</option>
+            <option value="explorador">Explorador</option>
+            <option value="erudito">Erudito</option>
+            <option value="leyenda">Leyenda</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn-limpiar-filtros" id="btnLimpiarFiltros">
+          <i class="bi bi-x-circle" aria-hidden="true"></i>
+          Limpiar
+        </button>
+      </div>
+
+      <div class="tabla-contenedor">
+        <table class="tabla-posiciones">
+          <thead>
+            <tr>
+              <th scope="col">Puesto</th>
+              <th scope="col">Lector</th>
+              <th scope="col">Nivel</th>
+              <th scope="col">Libros leídos</th>
+              <th scope="col">Puntos</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-posiciones-body">
+            <tr>
+              <td colspan="5" class="tabla-cargando">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Consultando lectores…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sin-resultados" id="sin-resultados" hidden>
+        <i class="bi bi-emoji-neutral" aria-hidden="true"></i>
+        <h3>No encontramos lectores</h3>
+        <p>Prueba con otro nombre o cambia el nivel seleccionado.</p>
+      </div>
+
+      <div class="tabla-pie">
+        <span id="resumen-paginacion">Mostrando 0 lectores</span>
+        <div class="paginacion">
+          <button type="button" id="btnPaginaAnterior" aria-label="Página anterior">
+            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+          </button>
+          <span id="pagina-actual">1</span>
+          <button type="button" id="btnPaginaSiguiente" aria-label="Página siguiente">
+            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== NIVELES ===================== -->
+    <section class="niveles-seccion" aria-labelledby="titulo-niveles">
+      <div class="niveles-encabezado">
+        <h2 id="titulo-niveles">Niveles de lector</h2>
+        <p>Los puntos mínimos son una propuesta; ajústalos según cómo quieras puntuar.</p>
+      </div>
+
+      <div class="niveles-grid">
+        <article class="nivel-tarjeta nivel-semilla">
+          <i class="bi bi-flower1" aria-hidden="true"></i>
+          <strong>Semilla</strong>
+          <span>0 pts</span>
+        </article>
+        <article class="nivel-tarjeta nivel-lector">
+          <i class="bi bi-book-half" aria-hidden="true"></i>
+          <strong>Lector</strong>
+          <span>100 pts</span>
+        </article>
+        <article class="nivel-tarjeta nivel-explorador">
+          <i class="bi bi-compass" aria-hidden="true"></i>
+          <strong>Explorador</strong>
+          <span>300 pts</span>
+        </article>
+        <article class="nivel-tarjeta nivel-erudito">
+          <i class="bi bi-mortarboard" aria-hidden="true"></i>
+          <strong>Erudito</strong>
+          <span>700 pts</span>
+        </article>
+        <article class="nivel-tarjeta nivel-leyenda">
+          <i class="bi bi-gem" aria-hidden="true"></i>
+          <strong>Leyenda</strong>
+          <span>1500 pts</span>
+        </article>
+      </div>
+    </section>
+
+    <footer class="pie-pagina">
+      <span><i class="bi bi-stars" aria-hidden="true"></i> Aurora Libris</span>
+      <span>Lee, suma puntos y sube de nivel.</span>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../js/tabla_posiciones.js"></script>
+</body>
+</html>

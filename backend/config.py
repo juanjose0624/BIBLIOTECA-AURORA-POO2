@@ -1,7 +1,9 @@
-"""Configuración central del proyecto.
+"""Configuración central de Aurora Libris.
 
-Los datos secretos (contraseña de la base de datos, clave secreta) NO se escriben aquí:
-viven en el archivo .env, que no se comparte ni se sube a Git.
+Carga las variables de entorno desde el archivo .env y define
+los parámetros de seguridad de las sesiones, la duración de las cookies
+y las credenciales de conexión a PostgreSQL. Comprueba que las variables
+secretas obligatorias estén configuradas antes de iniciar la aplicación.
 """
 import os
 from datetime import timedelta

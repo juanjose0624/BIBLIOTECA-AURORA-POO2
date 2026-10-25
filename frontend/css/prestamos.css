@@ -760,9 +760,6 @@ body.pagina-prestamos ::selection {
 }
 
 .fecha-celda {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
     white-space: nowrap;
 }
 

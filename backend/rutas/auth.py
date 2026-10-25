@@ -1,4 +1,9 @@
-"""Rutas de autenticación: registro, login, logout y quién soy."""
+"""Módulo de rutas de autenticación de Aurora Libris.
+
+Gestiona el registro de usuarios, el inicio y cierre de sesión,
+la consulta de la sesión activa y la actualización de los datos
+personales de la cuenta.
+"""
 from flask import Blueprint, current_app, jsonify, request, session
 
 from repositorios.usuario_repositorio import CorreoYaRegistrado, UsuarioRepositorio

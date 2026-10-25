@@ -1,5 +1,9 @@
-"""Rutas para la página principal, los dashboards, los CRUD y la sala VR."""
+"""Módulo de rutas para las páginas y vistas de Aurora Libris.
 
+Gestiona el acceso a la página principal, los dashboards, la sala VR
+y los CRUD administrativos, verificando la sesión activa y los permisos
+según el rol del usuario para proteger el acceso a los archivos.
+"""
 from pathlib import Path
 
 from flask import (
@@ -33,6 +37,7 @@ DASHBOARDS_PERMITIDOS = {
     "administrador.html": "administrador",
     "actualizar_datos.html": None,
     "vr.html": None,
+    "tabla_posiciones.html": None,
 }
 
 
@@ -138,3 +143,4 @@ def servir_crud_estadisticas():
 def servir_crud_solicitudes():
     """Sirve el CRUD de solicitudes exclusivamente a administradores."""
     return _servir_crud_administrativo("solicitudes.html")
+

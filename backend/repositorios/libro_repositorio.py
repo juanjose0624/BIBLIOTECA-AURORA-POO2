@@ -1,5 +1,9 @@
 
-"""Repositorio: la única parte del código que habla SQL con libros."""
+"""Repositorio de libros de Aurora Libris.
+
+Centraliza las consultas SQL para listar, buscar, crear,
+actualizar y eliminar libros en la base de datos.
+"""
 
 from db import obtener_conexion
 from modelos.libro import Libro

@@ -1,6 +1,8 @@
+"""Modelo que representa los libros de Aurora Libris.
 
-"""Modelo: representa un libro de la biblioteca."""
-
+Almacena la información de cada libro, como título, autor,
+ISBN, editorial, categoría y cantidades disponibles.
+"""
 
 class Libro:
     def __init__(

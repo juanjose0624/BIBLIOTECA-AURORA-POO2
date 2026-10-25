@@ -1,5 +1,10 @@
-"""Rutas del CRUD de usuarios, exclusivas para administradores."""
+"""Módulo de rutas para el CRUD de usuarios de Aurora Libris.
 
+Permite a los administradores listar, consultar, crear, actualizar
+y eliminar cuentas, incluyendo la gestión de roles y contraseñas,
+con validaciones de datos, manejo de errores y protección
+del último administrador del sistema.
+"""
 from flask import Blueprint, current_app, jsonify, request
 
 from repositorios.usuario_repositorio import (

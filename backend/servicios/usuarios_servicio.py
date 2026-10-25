@@ -1,6 +1,11 @@
 
-"""Servicio para gestionar usuarios desde el panel administrativo."""
+"""Servicio de gestión administrativa de usuarios de Aurora Libris.
 
+Centraliza las reglas de negocio para validar, crear, consultar,
+actualizar y eliminar cuentas, incluyendo la gestión de roles,
+la actualización de datos personales y la protección de contraseñas
+mediante hashes con bcrypt.
+"""
 import re
 
 import bcrypt

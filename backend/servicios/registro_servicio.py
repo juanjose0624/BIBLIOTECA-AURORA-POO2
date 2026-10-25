@@ -1,4 +1,10 @@
-"""Servicio: las reglas del registro. Valida, protege la contraseña y guarda."""
+"""Servicio de registro de usuarios de Aurora Libris.
+
+Valida y normaliza los datos del formulario de registro, comprueba
+los requisitos de los campos personales y de la contraseña, protege
+las credenciales mediante hashes con bcrypt y guarda las cuentas
+válidas en la base de datos a través del repositorio de usuarios.
+"""
 import re
 
 import bcrypt

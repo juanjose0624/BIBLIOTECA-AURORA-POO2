@@ -1,4 +1,3 @@
-
 "use strict";
 
 /* =========================================================
@@ -7,13 +6,13 @@
 
    Contrato esperado de la API:
    GET    /api/prestamos
-   POST   /api/prestamos/:id/aprobar
-   POST   /api/prestamos/:id/rechazar
-   POST   /api/prestamos/:id/devolucion
-   POST   /api/prestamos/:id/sancion
+   POST   /api/prestamos/:solicitud_id/aprobar
+   POST   /api/prestamos/:solicitud_id/rechazar
+   POST   /api/prestamos/:prestamo_id/devolucion
+   POST   /api/prestamos/:prestamo_id/sancion
 
-   Estas rutas son propuestas; todavía deben implementarse
-   y validarse en el backend Flask.
+   Todas las interacciones (alertas, confirmaciones y
+   formularios) se hacen con SweetAlert2.
    ========================================================= */
 
 const CONFIG_PRESTAMOS = {
@@ -50,35 +49,7 @@ const elementos = {
     resumenPaginacion: $("#resumen-paginacion"),
     paginaActual: $("#pagina-actual"),
     anterior: $("#btnPaginaAnterior"),
-    siguiente: $("#btnPaginaSiguiente"),
-
-    formAprobar: $("#formAprobar"),
-    aprobarId: $("#aprobar-prestamo-id"),
-    aprobarUsuario: $("#aprobar-usuario"),
-    aprobarLibro: $("#aprobar-libro"),
-    fechaPrestamo: $("#fecha-prestamo"),
-    fechaVencimiento: $("#fecha-vencimiento"),
-
-    formDevolucion: $("#formDevolucion"),
-    devolucionId: $("#devolucion-prestamo-id"),
-    devolucionUsuario: $("#devolucion-usuario"),
-    devolucionLibro: $("#devolucion-libro"),
-    devolucionAtraso: $("#devolucion-atraso"),
-    fechaDevolucion: $("#fecha-devolucion"),
-
-    formSancion: $("#formSancion"),
-    sancionId: $("#sancion-prestamo-id"),
-    sancionUsuario: $("#sancion-usuario"),
-    sancionLibro: $("#sancion-libro"),
-    sancionAtraso: $("#sancion-atraso"),
-    diasSancion: $("#dias-sancion"),
-    motivoSancion: $("#motivo-sancion")
-};
-
-const modales = {
-    aprobar: bootstrap.Modal.getOrCreateInstance($("#modalAprobar")),
-    devolucion: bootstrap.Modal.getOrCreateInstance($("#modalDevolucion")),
-    sancion: bootstrap.Modal.getOrCreateInstance($("#modalSancion"))
+    siguiente: $("#btnPaginaSiguiente")
 };
 
 /* ---------- Utilidades ---------- */
@@ -223,8 +194,166 @@ function obtenerAtraso(registro) {
     return 0;
 }
 
-function mostrarMensaje(mensaje) {
-    window.alert(mensaje);
+/* ---------- Notificaciones SweetAlert2 ---------- */
+
+const ESTILO_SWAL = {
+    confirmButtonColor: "#7C5CF2",
+    cancelButtonColor: "#475569",
+    background: "#111A4A",
+    color: "#E9EDFF"
+};
+
+function mostrarMensaje(mensaje, tipo = "info") {
+    const configuraciones = {
+        success: {
+            icon: "success",
+            title: "¡Operación exitosa!",
+            confirmButtonText: "Continuar"
+        },
+        error: {
+            icon: "error",
+            title: "Algo salió mal",
+            confirmButtonText: "Entendido"
+        },
+        warning: {
+            icon: "warning",
+            title: "Atención",
+            confirmButtonText: "Entendido"
+        },
+        info: {
+            icon: "info",
+            title: "Información",
+            confirmButtonText: "Entendido"
+        }
+    };
+
+    const configuracion = configuraciones[tipo] ?? configuraciones.info;
+
+    return Swal.fire({
+        ...ESTILO_SWAL,
+        title: configuracion.title,
+        text: mensaje,
+        icon: configuracion.icon,
+        confirmButtonText: configuracion.confirmButtonText,
+        allowOutsideClick: false,
+        customClass: {
+            popup: "aurora-alerta",
+            confirmButton: "aurora-alerta-confirmar"
+        }
+    });
+}
+
+function confirmarAccion({
+    titulo,
+    mensaje,
+    textoConfirmar = "Sí, continuar",
+    textoCancelar = "Cancelar",
+    icono = "question"
+}) {
+    return Swal.fire({
+        ...ESTILO_SWAL,
+        title: titulo,
+        text: mensaje,
+        icon: icono,
+        showCancelButton: true,
+        confirmButtonText: textoConfirmar,
+        cancelButtonText: textoCancelar,
+        reverseButtons: true,
+        focusCancel: true,
+        allowOutsideClick: false,
+        customClass: {
+            popup: "aurora-alerta",
+            confirmButton: "aurora-alerta-confirmar",
+            cancelButton: "aurora-alerta-cancelar"
+        }
+    });
+}
+
+/*
+ * Diálogo con formulario. `validar` recibe el popup y devuelve
+ * { error } o { datos, ruta, mensajeExito }. La llamada a la API
+ * se hace dentro de preConfirm: si falla, el error se muestra en
+ * el mismo diálogo y este no se cierra.
+ */
+async function dialogoFormulario({
+    titulo,
+    html,
+    textoConfirmar,
+    icono = "question",
+    alAbrir,
+    validar
+}) {
+    const resultado = await Swal.fire({
+        ...ESTILO_SWAL,
+        title: titulo,
+        html,
+        icon: icono,
+        showCancelButton: true,
+        confirmButtonText: textoConfirmar,
+        cancelButtonText: "Cancelar",
+        reverseButtons: true,
+        allowOutsideClick: false,
+        showLoaderOnConfirm: true,
+        customClass: {
+            popup: "aurora-alerta",
+            confirmButton: "aurora-alerta-confirmar",
+            cancelButton: "aurora-alerta-cancelar"
+        },
+        didOpen: (popup) => alAbrir?.(popup),
+        preConfirm: async () => {
+            const popup = Swal.getPopup();
+            const validacion = validar(popup);
+
+            if (validacion.error) {
+                Swal.showValidationMessage(validacion.error);
+                return false;
+            }
+
+            try {
+                await solicitarAPI(validacion.ruta, {
+                    method: "POST",
+                    body: JSON.stringify(validacion.datos)
+                });
+
+                return validacion.mensajeExito;
+            } catch (error) {
+                console.error("Error al ejecutar la acción:", error);
+                Swal.showValidationMessage(
+                    `No fue posible completar la operación. ${error.message}`
+                );
+                return false;
+            }
+        }
+    });
+
+    if (!resultado.isConfirmed) return false;
+
+    await mostrarMensaje(resultado.value, "success");
+    await cargarPrestamos();
+
+    return true;
+}
+
+function resumenHTML(filas) {
+    return `
+        <div style="text-align:left; margin-bottom:1rem; line-height:1.6;">
+            ${filas.map(([etiqueta, valor]) => `
+                <div>
+                    <strong>${escaparHTML(etiqueta)}:</strong>
+                    ${escaparHTML(valor)}
+                </div>
+            `).join("")}
+        </div>
+    `;
+}
+
+function campoHTML(etiqueta, control) {
+    return `
+        <label style="display:block; text-align:left; margin-top:.5rem;">
+            ${escaparHTML(etiqueta)}
+        </label>
+        ${control}
+    `;
 }
 
 function actualizarConexion(mensaje, correcta = true) {
@@ -554,7 +683,7 @@ function renderizarTabla() {
     elementos.tabla.innerHTML = registrosPagina.map(filaHTML).join("");
 }
 
-/* ---------- Modales ---------- */
+/* ---------- Diálogos de acción (SweetAlert2) ---------- */
 
 function buscarRegistro(id) {
     return estadoPrestamos.registros.find(
@@ -563,57 +692,209 @@ function buscarRegistro(id) {
 }
 
 function abrirAprobacion(registro) {
-    elementos.formAprobar.reset();
-
-    elementos.aprobarId.value = registro.id;
-    elementos.aprobarUsuario.textContent = nombreUsuario(registro);
-    elementos.aprobarLibro.textContent = nombreLibro(registro);
-
     const hoy = fechaLocalISO();
-    elementos.fechaPrestamo.value = hoy;
-    elementos.fechaPrestamo.min = hoy;
 
-    const vencimiento = new Date();
-    vencimiento.setDate(vencimiento.getDate() + 14);
+    const vencimientoInicial = new Date();
+    vencimientoInicial.setDate(vencimientoInicial.getDate() + 14);
 
-    elementos.fechaVencimiento.value = fechaLocalISO(vencimiento);
-    elementos.fechaVencimiento.min = hoy;
+    return dialogoFormulario({
+        titulo: "Aprobar solicitud",
+        icono: "question",
+        textoConfirmar: "Aprobar préstamo",
+        html:
+            resumenHTML([
+                ["Usuario", nombreUsuario(registro)],
+                ["Libro", nombreLibro(registro)]
+            ]) +
+            campoHTML(
+                "Fecha del préstamo",
+                '<input id="swal-fecha-prestamo" type="date" class="swal2-input" style="margin:.25rem 0 0; width:100%;">'
+            ) +
+            campoHTML(
+                "Fecha límite de entrega",
+                '<input id="swal-fecha-vencimiento" type="date" class="swal2-input" style="margin:.25rem 0 0; width:100%;">'
+            ),
+        alAbrir: (popup) => {
+            const prestamo = popup.querySelector("#swal-fecha-prestamo");
+            const vencimiento = popup.querySelector("#swal-fecha-vencimiento");
 
-    modales.aprobar.show();
+            prestamo.value = hoy;
+            prestamo.min = hoy;
+            vencimiento.value = fechaLocalISO(vencimientoInicial);
+            vencimiento.min = hoy;
+
+            prestamo.addEventListener("change", () => {
+                vencimiento.min = prestamo.value;
+
+                if (vencimiento.value && vencimiento.value < prestamo.value) {
+                    vencimiento.value = prestamo.value;
+                }
+            });
+        },
+        validar: (popup) => {
+            const fechaPrestamo = popup.querySelector("#swal-fecha-prestamo").value;
+            const fechaVencimiento = popup.querySelector("#swal-fecha-vencimiento").value;
+
+            if (!fechaPrestamo || !fechaVencimiento) {
+                return { error: "Completa las fechas del préstamo." };
+            }
+
+            if (fechaVencimiento < fechaPrestamo) {
+                return {
+                    error: "La fecha límite de entrega no puede ser anterior a la fecha del préstamo."
+                };
+            }
+
+            return {
+                ruta: `${CONFIG_PRESTAMOS.api}/${registro.solicitud_id ?? registro.id}/aprobar`,
+                datos: {
+                    fecha_prestamo: fechaPrestamo,
+                    fecha_vencimiento: fechaVencimiento
+                },
+                mensajeExito: "La solicitud fue aprobada."
+            };
+        }
+    });
 }
 
 function abrirDevolucion(registro) {
-    elementos.formDevolucion.reset();
+    if (!registro.prestamo_id) {
+        return mostrarMensaje(
+            "Este registro no tiene un préstamo asociado.",
+            "warning"
+        );
+    }
 
-    elementos.devolucionId.value = registro.id;
-    elementos.devolucionUsuario.textContent = nombreUsuario(registro);
-    elementos.devolucionLibro.textContent = nombreLibro(registro);
-    elementos.devolucionAtraso.textContent =
-        `${obtenerAtraso(registro)} día(s)`;
+    const minimo = String(registro.fecha_prestamo ?? "").slice(0, 10);
 
-    elementos.fechaDevolucion.value = fechaLocalISO();
-    elementos.fechaDevolucion.min =
-        String(registro.fecha_prestamo ?? "").slice(0, 10);
+    return dialogoFormulario({
+        titulo: "Registrar devolución",
+        icono: "question",
+        textoConfirmar: "Registrar devolución",
+        html:
+            resumenHTML([
+                ["Usuario", nombreUsuario(registro)],
+                ["Libro", nombreLibro(registro)],
+                ["Atraso", `${obtenerAtraso(registro)} día(s)`]
+            ]) +
+            campoHTML(
+                "Fecha de devolución",
+                '<input id="swal-fecha-devolucion" type="date" class="swal2-input" style="margin:.25rem 0 0; width:100%;">'
+            ),
+        alAbrir: (popup) => {
+            const campo = popup.querySelector("#swal-fecha-devolucion");
 
-    modales.devolucion.show();
+            campo.value = fechaLocalISO();
+            if (minimo) campo.min = minimo;
+        },
+        validar: (popup) => {
+            const fechaDevolucion = popup.querySelector("#swal-fecha-devolucion").value;
+
+            if (!fechaDevolucion) {
+                return { error: "Verifica los datos de la devolución." };
+            }
+
+            if (minimo && fechaDevolucion < minimo) {
+                return {
+                    error: "La fecha de devolución no puede ser anterior al préstamo."
+                };
+            }
+
+            return {
+                ruta: `${CONFIG_PRESTAMOS.api}/${registro.prestamo_id}/devolucion`,
+                datos: { fecha_devolucion: fechaDevolucion },
+                mensajeExito: "La devolución fue registrada."
+            };
+        }
+    });
 }
 
 function abrirSancion(registro) {
+    if (!registro.prestamo_id) {
+        return mostrarMensaje(
+            "Este registro no tiene un préstamo asociado.",
+            "warning"
+        );
+    }
+
     const atraso = obtenerAtraso(registro);
 
     if (atraso < 1) {
-        mostrarMensaje("Este préstamo no presenta días de atraso.");
-        return;
+        return mostrarMensaje("Este préstamo no presenta días de atraso.");
     }
 
-    elementos.formSancion.reset();
+    return dialogoFormulario({
+        titulo: "Registrar sanción",
+        icono: "warning",
+        textoConfirmar: "Registrar sanción",
+        html:
+            resumenHTML([
+                ["Usuario", nombreUsuario(registro)],
+                ["Libro", nombreLibro(registro)],
+                ["Atraso", `${atraso} día(s)`]
+            ]) +
+            campoHTML(
+                "Días de sanción (1 a 365)",
+                '<input id="swal-dias-sancion" type="number" min="1" max="365" step="1" class="swal2-input" style="margin:.25rem 0 0; width:100%;">'
+            ) +
+            campoHTML(
+                "Motivo",
+                '<textarea id="swal-motivo-sancion" class="swal2-textarea" style="margin:.25rem 0 0; width:100%;"></textarea>'
+            ),
+        validar: (popup) => {
+            const dias = Number(popup.querySelector("#swal-dias-sancion").value);
+            const motivo = popup.querySelector("#swal-motivo-sancion").value.trim();
 
-    elementos.sancionId.value = registro.id;
-    elementos.sancionUsuario.textContent = nombreUsuario(registro);
-    elementos.sancionLibro.textContent = nombreLibro(registro);
-    elementos.sancionAtraso.textContent = `${atraso} día(s)`;
+            if (!Number.isInteger(dias) || dias < 1 || dias > 365 || !motivo) {
+                return {
+                    error: "Indica una duración válida entre 1 y 365 días y un motivo."
+                };
+            }
 
-    modales.sancion.show();
+            if (obtenerAtraso(registro) < 1) {
+                return {
+                    error: "Solo puedes registrar esta sanción si hay días de atraso."
+                };
+            }
+
+            return {
+                ruta: `${CONFIG_PRESTAMOS.api}/${registro.prestamo_id}/sancion`,
+                datos: { dias_sancion: dias, motivo },
+                mensajeExito: "La sanción fue registrada."
+            };
+        }
+    });
+}
+
+async function rechazarSolicitud(registro) {
+    const resultado = await confirmarAccion({
+        titulo: "¿Rechazar solicitud?",
+        mensaje:
+            `¿Deseas rechazar la solicitud de ${nombreUsuario(registro)} ` +
+            `para el libro "${nombreLibro(registro)}"?`,
+        textoConfirmar: "Sí, rechazar",
+        textoCancelar: "Cancelar",
+        icono: "warning"
+    });
+
+    if (!resultado.isConfirmed) return;
+
+    try {
+        await solicitarAPI(
+            `${CONFIG_PRESTAMOS.api}/${registro.solicitud_id ?? registro.id}/rechazar`,
+            { method: "POST", body: JSON.stringify({}) }
+        );
+
+        await mostrarMensaje("La solicitud fue rechazada correctamente.", "success");
+        await cargarPrestamos();
+    } catch (error) {
+        console.error("Error al rechazar la solicitud:", error);
+
+        await mostrarMensaje(
+            `No fue posible completar la operación.\n${error.message}`,
+            "error"
+        );
+    }
 }
 
 /* ---------- Acciones de la tabla ---------- */
@@ -622,9 +903,15 @@ elementos.tabla.addEventListener("click", (evento) => {
     const boton = evento.target.closest("[data-accion]");
     if (!boton) return;
 
+    if (boton.disabled) return;
+
     const registro = buscarRegistro(boton.dataset.id);
+
     if (!registro) {
-        mostrarMensaje("No se encontró el registro seleccionado.");
+        mostrarMensaje(
+            "No se encontró el registro seleccionado.",
+            "warning"
+        );
         return;
     }
 
@@ -644,175 +931,6 @@ elementos.tabla.addEventListener("click", (evento) => {
         case "sancionar":
             abrirSancion(registro);
             break;
-    }
-});
-
-async function ejecutarAccion(ruta, datos, mensajeExito) {
-    try {
-        await solicitarAPI(ruta, {
-            method: "POST",
-            body: JSON.stringify(datos)
-        });
-
-        mostrarMensaje(mensajeExito);
-        await cargarPrestamos();
-        return true;
-    } catch (error) {
-        console.error("Error al ejecutar la acción:", error);
-        mostrarMensaje(
-            `No fue posible completar la operación.\n${error.message}`
-        );
-        return false;
-    }
-}
-
-async function rechazarSolicitud(registro) {
-    const confirmar = window.confirm(
-        `¿Deseas rechazar la solicitud de ${nombreUsuario(registro)} para el libro "${nombreLibro(registro)}"?`
-    );
-
-    if (!confirmar) return;
-
-    await ejecutarAccion(
-        `${CONFIG_PRESTAMOS.api}/${registro.id}/rechazar`,
-        {},
-        "La solicitud fue rechazada."
-    );
-}
-
-/* ---------- Formulario: aprobar ---------- */
-
-elementos.formAprobar.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
-
-    const id = Number(elementos.aprobarId.value);
-    const fechaPrestamo = elementos.fechaPrestamo.value;
-    const fechaVencimiento = elementos.fechaVencimiento.value;
-
-    if (!id || !fechaPrestamo || !fechaVencimiento) {
-        mostrarMensaje("Completa las fechas del préstamo.");
-        return;
-    }
-
-    if (fechaVencimiento < fechaPrestamo) {
-        mostrarMensaje(
-            "La fecha límite de entrega no puede ser anterior a la fecha del préstamo."
-        );
-        return;
-    }
-
-    const boton = elementos.formAprobar.querySelector('[type="submit"]');
-    boton.disabled = true;
-
-    try {
-        const correcto = await ejecutarAccion(
-            `${CONFIG_PRESTAMOS.api}/${id}/aprobar`,
-            {
-                fecha_prestamo: fechaPrestamo,
-                fecha_vencimiento: fechaVencimiento
-            },
-            "La solicitud fue aprobada."
-        );
-
-        if (correcto) modales.aprobar.hide();
-    } finally {
-        boton.disabled = false;
-    }
-});
-
-/* ---------- Formulario: devolución ---------- */
-
-elementos.formDevolucion.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
-
-    const id = Number(elementos.devolucionId.value);
-    const fechaDevolucion = elementos.fechaDevolucion.value;
-    const registro = buscarRegistro(id);
-
-    if (!id || !fechaDevolucion || !registro) {
-        mostrarMensaje("Verifica los datos de la devolución.");
-        return;
-    }
-
-    if (
-        registro.fecha_prestamo &&
-        fechaDevolucion < String(registro.fecha_prestamo).slice(0, 10)
-    ) {
-        mostrarMensaje(
-            "La fecha de devolución no puede ser anterior al préstamo."
-        );
-        return;
-    }
-
-    const boton = elementos.formDevolucion.querySelector('[type="submit"]');
-    boton.disabled = true;
-
-    try {
-        const correcto = await ejecutarAccion(
-            `${CONFIG_PRESTAMOS.api}/${id}/devolucion`,
-            { fecha_devolucion: fechaDevolucion },
-            "La devolución fue registrada."
-        );
-
-        if (correcto) modales.devolucion.hide();
-    } finally {
-        boton.disabled = false;
-    }
-});
-
-/* ---------- Formulario: sanción ---------- */
-
-elementos.formSancion.addEventListener("submit", async (evento) => {
-    evento.preventDefault();
-
-    const id = Number(elementos.sancionId.value);
-    const dias = Number(elementos.diasSancion.value);
-    const motivo = elementos.motivoSancion.value.trim();
-    const registro = buscarRegistro(id);
-
-    if (
-        !id ||
-        !registro ||
-        !Number.isInteger(dias) ||
-        dias < 1 ||
-        dias > 365 ||
-        !motivo
-    ) {
-        mostrarMensaje(
-            "Indica una duración válida entre 1 y 365 días y un motivo."
-        );
-        return;
-    }
-
-    if (obtenerAtraso(registro) < 1) {
-        mostrarMensaje(
-            "Solo puedes registrar esta sanción si hay días de atraso."
-        );
-        return;
-    }
-
-    const confirmar = window.confirm(
-        `¿Confirmas una sanción de ${dias} día(s) para ${nombreUsuario(registro)}?\n\nMotivo: ${motivo}`
-    );
-
-    if (!confirmar) return;
-
-    const boton = elementos.formSancion.querySelector('[type="submit"]');
-    boton.disabled = true;
-
-    try {
-        const correcto = await ejecutarAccion(
-            `${CONFIG_PRESTAMOS.api}/${id}/sancion`,
-            {
-                dias_sancion: dias,
-                motivo
-            },
-            "La sanción fue registrada."
-        );
-
-        if (correcto) modales.sancion.hide();
-    } finally {
-        boton.disabled = false;
     }
 });
 
@@ -851,17 +969,6 @@ elementos.siguiente.addEventListener("click", () => {
     if (estadoPrestamos.pagina < paginas) {
         estadoPrestamos.pagina++;
         renderizarTabla();
-    }
-});
-
-elementos.fechaPrestamo.addEventListener("change", () => {
-    elementos.fechaVencimiento.min = elementos.fechaPrestamo.value;
-
-    if (
-        elementos.fechaVencimiento.value &&
-        elementos.fechaVencimiento.value < elementos.fechaPrestamo.value
-    ) {
-        elementos.fechaVencimiento.value = elementos.fechaPrestamo.value;
     }
 });
 

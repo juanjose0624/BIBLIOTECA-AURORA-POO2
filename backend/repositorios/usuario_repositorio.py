@@ -1,5 +1,9 @@
 
-"""Repositorio: la única parte del código que habla SQL con usuarios."""
+"""Repositorio encargado de gestionar el acceso a datos de los usuarios
+de Aurora Libris, incluyendo su creación, búsqueda, listado,
+actualización de datos personales, roles, contraseñas y eliminación,
+garantizando que siempre exista al menos un administrador.
+"""
 
 import psycopg
 

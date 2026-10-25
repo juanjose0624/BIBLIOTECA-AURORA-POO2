@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict fRkUKXDxVJfCFQKyJEcDBoGZvEX6cpfHDWgEdZXyJpntMDJf5o4MZxAIHQqycSz
+\restrict aTz1Q5zL2YYGmEo5ndwf36Pfknh3luOb21h1xEH33NSeFwPWpiDmnUQWvfKRV0Y
 
 -- Dumped from database version 17.11
 -- Dumped by pg_dump version 17.11
 
--- Started on 2026-10-24 23:11:50
+-- Started on 2026-10-25 11:14:42
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -24,6 +24,39 @@ SET row_security = off;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- TOC entry 230 (class 1259 OID 16531)
+-- Name: historial_puntos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.historial_puntos (
+    id bigint NOT NULL,
+    usuario_id integer NOT NULL,
+    prestamo_id integer NOT NULL,
+    puntos integer DEFAULT 10 NOT NULL,
+    motivo character varying(150) DEFAULT 'Devolución de libro'::character varying NOT NULL,
+    creado_en timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT historial_puntos_puntos_check CHECK ((puntos > 0))
+);
+
+
+ALTER TABLE public.historial_puntos OWNER TO postgres;
+
+--
+-- TOC entry 229 (class 1259 OID 16530)
+-- Name: historial_puntos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.historial_puntos ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.historial_puntos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- TOC entry 222 (class 1259 OID 16422)
@@ -52,7 +85,7 @@ CREATE TABLE public.libros (
 ALTER TABLE public.libros OWNER TO postgres;
 
 --
--- TOC entry 5001 (class 0 OID 0)
+-- TOC entry 5020 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: TABLE libros; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -100,7 +133,7 @@ CREATE TABLE public.pqrs (
 ALTER TABLE public.pqrs OWNER TO postgres;
 
 --
--- TOC entry 5002 (class 0 OID 0)
+-- TOC entry 5021 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: TABLE pqrs; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -147,7 +180,7 @@ CREATE TABLE public.prestamos (
 ALTER TABLE public.prestamos OWNER TO postgres;
 
 --
--- TOC entry 5003 (class 0 OID 0)
+-- TOC entry 5022 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: TABLE prestamos; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -274,7 +307,7 @@ CREATE TABLE public.usuarios (
 ALTER TABLE public.usuarios OWNER TO postgres;
 
 --
--- TOC entry 5004 (class 0 OID 0)
+-- TOC entry 5023 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: TABLE usuarios; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -283,7 +316,7 @@ COMMENT ON TABLE public.usuarios IS 'Cuentas de la plataforma: lectores y admini
 
 
 --
--- TOC entry 5005 (class 0 OID 0)
+-- TOC entry 5024 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: COLUMN usuarios.clave_hash; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -292,7 +325,7 @@ COMMENT ON COLUMN public.usuarios.clave_hash IS 'Hash de la contraseña (bcrypt 
 
 
 --
--- TOC entry 5006 (class 0 OID 0)
+-- TOC entry 5025 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: COLUMN usuarios.rol; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -316,7 +349,19 @@ ALTER TABLE public.usuarios ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 4989 (class 0 OID 16422)
+-- TOC entry 5014 (class 0 OID 16531)
+-- Dependencies: 230
+-- Data for Name: historial_puntos; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.historial_puntos (id, usuario_id, prestamo_id, puntos, motivo, creado_en) FROM stdin;
+1	3	5	10	Devolución de libro	2026-10-25 10:29:46.4304
+2	5	7	10	Devolución de libro	2026-10-25 10:38:28.68601
+\.
+
+
+--
+-- TOC entry 5006 (class 0 OID 16422)
 -- Dependencies: 222
 -- Data for Name: libros; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -327,7 +372,7 @@ COPY public.libros (id, titulo, autor, isbn, editorial, anio_publicacion, catego
 2	El amor en los tiempos del cólera	Gabriel García Márquez	PENDIENTE-002	Editorial Oveja Negra	1985	Romance	Una historia de amor que atraviesa el tiempo.	2	2	2026-10-23 10:55:56.672312-05
 3	Crónica de una muerte anunciada	Gabriel García Márquez	PENDIENTE-003	Editorial Oveja Negra	1981	Novela	Reconstrucción de un asesinato anunciado.	2	2	2026-10-23 10:55:56.672312-05
 15	El alquimista	Paulo Coelho	PENDIENTE-015	Editorial Rocco	1988	Ficción filosófica	Un joven pastor emprende un viaje en busca de su tesoro.	10	10	2026-10-23 10:55:56.672312-05
-34	La tía Julia y el escribidor	Mario Vargas Llosa	PENDIENTE-034	Editorial Seix Barral	1977	Novela	Amor, escritura y radionovelas en Lima.	2	1	2026-10-23 10:55:56.672312-05
+34	La tía Julia y el escribidor	Mario Vargas Llosa	PENDIENTE-034	Editorial Seix Barral	1977	Novela	Amor, escritura y radionovelas en Lima.	2	2	2026-10-23 10:55:56.672312-05
 4	El coronel no tiene quien le escriba	Gabriel García Márquez	PENDIENTE-004	Aguirre Editor	1961	Novela	Un coronel espera durante años su pensión.	2	2	2026-10-23 10:55:56.672312-05
 5	La hojarasca	Gabriel García Márquez	PENDIENTE-005	Editorial Losada	1955	Novela	Una familia afronta la muerte de un médico en Macondo.	1	1	2026-10-23 10:55:56.672312-05
 6	Del amor y otros demonios	Gabriel García Márquez	PENDIENTE-006	Editorial Norma	1994	Romance	Una historia de amor, religión y superstición.	2	2	2026-10-23 10:55:56.672312-05
@@ -358,7 +403,6 @@ COPY public.libros (id, titulo, autor, isbn, editorial, anio_publicacion, catego
 32	Conversación en La Catedral	Mario Vargas Llosa	PENDIENTE-032	Editorial Seix Barral	1969	Novela	Una conversación reconstruye una época de corrupción política.	1	1	2026-10-23 10:55:56.672312-05
 33	Pantaleón y las visitadoras	Mario Vargas Llosa	PENDIENTE-033	Editorial Seix Barral	1973	Sátira	Una misión militar se convierte en una situación absurda.	2	2	2026-10-23 10:55:56.672312-05
 35	Pedro Páramo	Juan Rulfo	PENDIENTE-035	Fondo de Cultura Económica	1955	Novela	Un hombre llega a Comala buscando a su padre.	3	3	2026-10-23 10:55:56.672312-05
-36	El llano en llamas	Juan Rulfo	PENDIENTE-036	Fondo de Cultura Económica	1953	Cuentos	Relatos sobre la vida rural mexicana.	2	2	2026-10-23 10:55:56.672312-05
 37	El gallo de oro	Juan Rulfo	PENDIENTE-037	Editorial Era	1980	Novela corta	Una historia de azar, ambición y espectáculos populares.	1	1	2026-10-23 10:55:56.672312-05
 38	El túnel	Ernesto Sábato	PENDIENTE-038	Editorial Sur	1948	Novela psicológica	Un pintor relata los hechos que lo llevaron al crimen.	2	2	2026-10-23 10:55:56.672312-05
 39	Sobre héroes y tumbas	Ernesto Sábato	PENDIENTE-039	Compañía General Fabril Editora	1961	Novela	Una historia de amor, crisis y obsesiones en Argentina.	1	1	2026-10-23 10:55:56.672312-05
@@ -367,40 +411,46 @@ COPY public.libros (id, titulo, autor, isbn, editorial, anio_publicacion, catego
 43	Veinte poemas de amor y una canción desesperada	Pablo Neruda	PENDIENTE-043	Editorial Nascimento	1924	Poesía	Poemario sobre el amor, el deseo y la ausencia.	2	2	2026-10-23 10:55:56.672312-05
 44	El señor presidente	Miguel Ángel Asturias	PENDIENTE-044	Costa-Amic Editores	1946	Novela política	Una denuncia literaria del autoritarismo.	1	1	2026-10-23 10:55:56.672312-05
 45	Los pasos perdidos	Alejo Carpentier	PENDIENTE-045	Editorial Losada	1953	Novela	Un viaje por la selva lleva a reflexionar sobre la civilización.	1	1	2026-10-23 10:55:56.672312-05
-47	El beso de la mujer araña	Manuel Puig	PENDIENTE-047	Editorial Seix Barral	1976	Novela	Dos presos construyen una relación mediante relatos y conversaciones.	1	1	2026-10-23 10:55:56.672312-05
-48	Como agua para chocolate	Laura Esquivel	PENDIENTE-048	Editorial Planeta	1989	Realismo mágico	La cocina y las emociones se entrelazan en una historia familiar.	2	2	2026-10-23 10:55:56.672312-05
 49	La ciudad de las bestias	Isabel Allende	PENDIENTE-049	Editorial Sudamericana	2002	Aventura juvenil	Una expedición lleva a un joven a la selva amazónica.	2	2	2026-10-23 10:55:56.672312-05
-41	La tregua	Mario Benedetti	PENDIENTE-041	Editorial Alfa	1960	Romance	El diario de un hombre que descubre una nueva oportunidad de amar.	2	1	2026-10-23 10:55:56.672312-05
-46	La invención de Morel	Adolfo Bioy Casares	PENDIENTE-046	Editorial Losada	1940	Ciencia ficción	Un fugitivo descubre una máquina que desafía la realidad.	2	2	2026-10-23 10:55:56.672312-05
+47	El beso de la mujer araña	Manuel Puig	PENDIENTE-047	Editorial Seix Barral	1976	Novela	Dos presos construyen una relación mediante relatos y conversaciones.	1	0	2026-10-23 10:55:56.672312-05
+41	La tregua	Mario Benedetti	PENDIENTE-041	Editorial Alfa	1960	Romance	El diario de un hombre que descubre una nueva oportunidad de amar.	2	2	2026-10-23 10:55:56.672312-05
+36	El llano en llamas	Juan Rulfo	PENDIENTE-036	Fondo de Cultura Económica	1953	Cuentos	Relatos sobre la vida rural mexicana.	2	2	2026-10-23 10:55:56.672312-05
+46	La invención de Morel	Adolfo Bioy Casares	PENDIENTE-046	Editorial Losada	1940	Ciencia ficción	Un fugitivo descubre una máquina que desafía la realidad.	2	1	2026-10-23 10:55:56.672312-05
+48	Como agua para chocolate	Laura Esquivel	PENDIENTE-048	Editorial Planeta	1989	Realismo mágico	La cocina y las emociones se entrelazan en una historia familiar.	2	2	2026-10-23 10:55:56.672312-05
 \.
 
 
 --
--- TOC entry 4987 (class 0 OID 16408)
+-- TOC entry 5004 (class 0 OID 16408)
 -- Dependencies: 220
 -- Data for Name: pqrs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.pqrs (id, nombre, correo, tipo, mensaje, estado, respuesta, creado_en, respondido_en, apellido) FROM stdin;
 1	Juan José	juanjose.sepu50@gmail.com	peticion	aaaaaaaaaaa	en_revision	\N	2026-10-23 11:11:16.694011-05	\N	Sepúlveda Álvarez
+2	Juan José	juanjose.sepu50@gmail.com	queja	siii funciona	pendiente	\N	2026-10-25 11:12:56.226-05	\N	Sepúlveda Álvarez
 \.
 
 
 --
--- TOC entry 4991 (class 0 OID 16439)
+-- TOC entry 5008 (class 0 OID 16439)
 -- Dependencies: 224
 -- Data for Name: prestamos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.prestamos (id, usuario_id, libro_id, fecha_prestamo, fecha_vencimiento, fecha_devolucion, estado, observaciones, creado_en) FROM stdin;
-1	3	34	2026-10-24	2026-11-07	\N	prestado	\N	2026-10-24 23:04:15.941283-05
-2	3	41	2026-10-24	2026-11-07	\N	prestado	\N	2026-10-24 23:04:42.781317-05
 3	3	46	2026-10-24	2026-11-07	2026-10-24	devuelto	\N	2026-10-24 23:04:53.836982-05
+1	3	34	2026-10-24	2026-11-07	2026-10-25	devuelto	\N	2026-10-24 23:04:15.941283-05
+4	3	47	2026-10-25	2026-11-08	\N	prestado	\N	2026-10-25 09:57:06.042441-05
+2	3	41	2026-10-24	2026-11-07	2026-10-25	devuelto	\N	2026-10-24 23:04:42.781317-05
+5	3	36	2026-10-25	2026-11-08	2026-10-25	devuelto	\N	2026-10-25 09:57:15.071234-05
+6	5	46	2026-10-25	2026-11-08	\N	prestado	\N	2026-10-25 10:38:15.503914-05
+7	5	48	2026-10-25	2026-11-08	2026-10-25	devuelto	\N	2026-10-25 10:38:19.860631-05
 \.
 
 
 --
--- TOC entry 4995 (class 0 OID 16504)
+-- TOC entry 5012 (class 0 OID 16504)
 -- Dependencies: 228
 -- Data for Name: sanciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -410,7 +460,7 @@ COPY public.sanciones (id, usuario_id, prestamo_id, dias_sancion, motivo, fecha_
 
 
 --
--- TOC entry 4993 (class 0 OID 16466)
+-- TOC entry 5010 (class 0 OID 16466)
 -- Dependencies: 226
 -- Data for Name: solicitudes_prestamo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -420,11 +470,15 @@ COPY public.solicitudes_prestamo (id, usuario_id, libro_id, estado, fecha_solici
 2	3	41	aprobado	2026-10-24 23:03:37.712577-05	2026-10-24 23:04:42.781317-05	1	\N	2
 1	3	46	aprobado	2026-10-24 22:56:39.027975-05	2026-10-24 23:04:53.836982-05	1	\N	3
 4	3	51	rechazado	2026-10-24 23:07:34.86697-05	2026-10-24 23:07:48.757576-05	1	\N	\N
+6	3	47	aprobado	2026-10-25 09:56:37.497971-05	2026-10-25 09:57:06.042441-05	1	\N	4
+5	3	36	aprobado	2026-10-25 09:55:20.558113-05	2026-10-25 09:57:15.071234-05	1	\N	5
+8	5	46	aprobado	2026-10-25 10:36:45.049379-05	2026-10-25 10:38:15.503914-05	1	\N	6
+7	5	48	aprobado	2026-10-25 10:36:41.805428-05	2026-10-25 10:38:19.860631-05	1	\N	7
 \.
 
 
 --
--- TOC entry 4985 (class 0 OID 16390)
+-- TOC entry 5002 (class 0 OID 16390)
 -- Dependencies: 218
 -- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -432,11 +486,21 @@ COPY public.solicitudes_prestamo (id, usuario_id, libro_id, estado, fecha_solici
 COPY public.usuarios (id, nombre, apellido, celular, correo, clave_hash, sexo, rol, creado_en) FROM stdin;
 3	Sebastián	Sierra	3136796613	juanjose.sepu500@gmail.com	$2b$12$i/aFdfOpRYSODOq2pr/1k.dc8S1uzR1itrey/UglCKXHLC59vv9Li	masculino	usuario	2026-10-22 16:16:08.964759-05
 1	Juan José	Sepúlveda Álvarez	3136796612	juanjose.sepu50@gmail.com	$2b$12$.oYXb8fDWYq.3xLXMF3W.uJZDg24dIxsH.dh3OcOJQaBtWAd9KdyW	masculino	administrador	2026-10-21 14:13:32.078046-05
+5	Anne	Newton	3136796613	ana@gmail.com	$2b$12$9/buQ.GgpZmMBurfOhFJQuQo2j1I5RpJXyVyAL3AH5JqKF247zO.a	femenino	usuario	2026-10-25 10:36:11.712221-05
 \.
 
 
 --
--- TOC entry 5007 (class 0 OID 0)
+-- TOC entry 5026 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: historial_puntos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.historial_puntos_id_seq', 2, true);
+
+
+--
+-- TOC entry 5027 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: libros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -445,25 +509,25 @@ SELECT pg_catalog.setval('public.libros_id_seq', 51, true);
 
 
 --
--- TOC entry 5008 (class 0 OID 0)
+-- TOC entry 5028 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: pqrs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pqrs_id_seq', 1, true);
+SELECT pg_catalog.setval('public.pqrs_id_seq', 2, true);
 
 
 --
--- TOC entry 5009 (class 0 OID 0)
+-- TOC entry 5029 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: prestamos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.prestamos_id_seq', 3, true);
+SELECT pg_catalog.setval('public.prestamos_id_seq', 7, true);
 
 
 --
--- TOC entry 5010 (class 0 OID 0)
+-- TOC entry 5030 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: sanciones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -472,25 +536,43 @@ SELECT pg_catalog.setval('public.sanciones_id_seq', 1, false);
 
 
 --
--- TOC entry 5011 (class 0 OID 0)
+-- TOC entry 5031 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: solicitudes_prestamo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.solicitudes_prestamo_id_seq', 4, true);
+SELECT pg_catalog.setval('public.solicitudes_prestamo_id_seq', 8, true);
 
 
 --
--- TOC entry 5012 (class 0 OID 0)
+-- TOC entry 5032 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuarios_id_seq', 4, true);
+SELECT pg_catalog.setval('public.usuarios_id_seq', 5, true);
 
 
 --
--- TOC entry 4812 (class 2606 OID 16437)
+-- TOC entry 4841 (class 2606 OID 16539)
+-- Name: historial_puntos historial_puntos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.historial_puntos
+    ADD CONSTRAINT historial_puntos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4843 (class 2606 OID 16541)
+-- Name: historial_puntos historial_puntos_prestamo_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.historial_puntos
+    ADD CONSTRAINT historial_puntos_prestamo_id_key UNIQUE (prestamo_id);
+
+
+--
+-- TOC entry 4821 (class 2606 OID 16437)
 -- Name: libros libros_isbn_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -499,7 +581,7 @@ ALTER TABLE ONLY public.libros
 
 
 --
--- TOC entry 4814 (class 2606 OID 16435)
+-- TOC entry 4823 (class 2606 OID 16435)
 -- Name: libros libros_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -508,7 +590,7 @@ ALTER TABLE ONLY public.libros
 
 
 --
--- TOC entry 4810 (class 2606 OID 16420)
+-- TOC entry 4819 (class 2606 OID 16420)
 -- Name: pqrs pqrs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -517,7 +599,7 @@ ALTER TABLE ONLY public.pqrs
 
 
 --
--- TOC entry 4819 (class 2606 OID 16451)
+-- TOC entry 4828 (class 2606 OID 16451)
 -- Name: prestamos prestamos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -526,7 +608,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 4829 (class 2606 OID 16517)
+-- TOC entry 4838 (class 2606 OID 16517)
 -- Name: sanciones sanciones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -535,7 +617,7 @@ ALTER TABLE ONLY public.sanciones
 
 
 --
--- TOC entry 4823 (class 2606 OID 16477)
+-- TOC entry 4832 (class 2606 OID 16477)
 -- Name: solicitudes_prestamo solicitudes_prestamo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -544,7 +626,7 @@ ALTER TABLE ONLY public.solicitudes_prestamo
 
 
 --
--- TOC entry 4825 (class 2606 OID 16479)
+-- TOC entry 4834 (class 2606 OID 16479)
 -- Name: solicitudes_prestamo solicitudes_prestamo_prestamo_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -553,7 +635,7 @@ ALTER TABLE ONLY public.solicitudes_prestamo
 
 
 --
--- TOC entry 4806 (class 2606 OID 16406)
+-- TOC entry 4815 (class 2606 OID 16406)
 -- Name: usuarios usuarios_correo_uq; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -562,7 +644,7 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
--- TOC entry 4808 (class 2606 OID 16404)
+-- TOC entry 4817 (class 2606 OID 16404)
 -- Name: usuarios usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -571,7 +653,23 @@ ALTER TABLE ONLY public.usuarios
 
 
 --
--- TOC entry 4815 (class 1259 OID 16464)
+-- TOC entry 4844 (class 1259 OID 16553)
+-- Name: idx_historial_puntos_fecha; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_historial_puntos_fecha ON public.historial_puntos USING btree (creado_en DESC);
+
+
+--
+-- TOC entry 4845 (class 1259 OID 16552)
+-- Name: idx_historial_puntos_usuario; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_historial_puntos_usuario ON public.historial_puntos USING btree (usuario_id);
+
+
+--
+-- TOC entry 4824 (class 1259 OID 16464)
 -- Name: idx_prestamos_estado; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -579,7 +677,7 @@ CREATE INDEX idx_prestamos_estado ON public.prestamos USING btree (estado);
 
 
 --
--- TOC entry 4816 (class 1259 OID 16463)
+-- TOC entry 4825 (class 1259 OID 16463)
 -- Name: idx_prestamos_libro; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -587,7 +685,7 @@ CREATE INDEX idx_prestamos_libro ON public.prestamos USING btree (libro_id);
 
 
 --
--- TOC entry 4817 (class 1259 OID 16462)
+-- TOC entry 4826 (class 1259 OID 16462)
 -- Name: idx_prestamos_usuario; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -595,7 +693,7 @@ CREATE INDEX idx_prestamos_usuario ON public.prestamos USING btree (usuario_id);
 
 
 --
--- TOC entry 4827 (class 1259 OID 16529)
+-- TOC entry 4836 (class 1259 OID 16529)
 -- Name: sanciones_estado_fecha_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -603,7 +701,7 @@ CREATE INDEX sanciones_estado_fecha_idx ON public.sanciones USING btree (estado,
 
 
 --
--- TOC entry 4830 (class 1259 OID 16528)
+-- TOC entry 4839 (class 1259 OID 16528)
 -- Name: sanciones_usuario_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -611,7 +709,7 @@ CREATE INDEX sanciones_usuario_idx ON public.sanciones USING btree (usuario_id);
 
 
 --
--- TOC entry 4820 (class 1259 OID 16500)
+-- TOC entry 4829 (class 1259 OID 16500)
 -- Name: solicitudes_estado_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -619,7 +717,7 @@ CREATE INDEX solicitudes_estado_idx ON public.solicitudes_prestamo USING btree (
 
 
 --
--- TOC entry 4821 (class 1259 OID 16502)
+-- TOC entry 4830 (class 1259 OID 16502)
 -- Name: solicitudes_libro_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -627,7 +725,7 @@ CREATE INDEX solicitudes_libro_idx ON public.solicitudes_prestamo USING btree (l
 
 
 --
--- TOC entry 4826 (class 1259 OID 16501)
+-- TOC entry 4835 (class 1259 OID 16501)
 -- Name: solicitudes_usuario_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -635,7 +733,25 @@ CREATE INDEX solicitudes_usuario_idx ON public.solicitudes_prestamo USING btree 
 
 
 --
--- TOC entry 4831 (class 2606 OID 16457)
+-- TOC entry 4854 (class 2606 OID 16547)
+-- Name: historial_puntos historial_puntos_prestamo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.historial_puntos
+    ADD CONSTRAINT historial_puntos_prestamo_id_fkey FOREIGN KEY (prestamo_id) REFERENCES public.prestamos(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 4855 (class 2606 OID 16542)
+-- Name: historial_puntos historial_puntos_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.historial_puntos
+    ADD CONSTRAINT historial_puntos_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 4846 (class 2606 OID 16457)
 -- Name: prestamos prestamos_libro_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -644,7 +760,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 4832 (class 2606 OID 16452)
+-- TOC entry 4847 (class 2606 OID 16452)
 -- Name: prestamos prestamos_usuario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -653,7 +769,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 4837 (class 2606 OID 16523)
+-- TOC entry 4852 (class 2606 OID 16523)
 -- Name: sanciones sanciones_prestamo_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -662,7 +778,7 @@ ALTER TABLE ONLY public.sanciones
 
 
 --
--- TOC entry 4838 (class 2606 OID 16518)
+-- TOC entry 4853 (class 2606 OID 16518)
 -- Name: sanciones sanciones_usuario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -671,7 +787,7 @@ ALTER TABLE ONLY public.sanciones
 
 
 --
--- TOC entry 4833 (class 2606 OID 16485)
+-- TOC entry 4848 (class 2606 OID 16485)
 -- Name: solicitudes_prestamo solicitudes_libro_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -680,7 +796,7 @@ ALTER TABLE ONLY public.solicitudes_prestamo
 
 
 --
--- TOC entry 4834 (class 2606 OID 16495)
+-- TOC entry 4849 (class 2606 OID 16495)
 -- Name: solicitudes_prestamo solicitudes_prestamo_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -689,7 +805,7 @@ ALTER TABLE ONLY public.solicitudes_prestamo
 
 
 --
--- TOC entry 4835 (class 2606 OID 16490)
+-- TOC entry 4850 (class 2606 OID 16490)
 -- Name: solicitudes_prestamo solicitudes_responsable_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -698,7 +814,7 @@ ALTER TABLE ONLY public.solicitudes_prestamo
 
 
 --
--- TOC entry 4836 (class 2606 OID 16480)
+-- TOC entry 4851 (class 2606 OID 16480)
 -- Name: solicitudes_prestamo solicitudes_usuario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -706,11 +822,11 @@ ALTER TABLE ONLY public.solicitudes_prestamo
     ADD CONSTRAINT solicitudes_usuario_fk FOREIGN KEY (usuario_id) REFERENCES public.usuarios(id) ON DELETE RESTRICT;
 
 
--- Completed on 2026-10-24 23:11:51
+-- Completed on 2026-10-25 11:14:42
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict fRkUKXDxVJfCFQKyJEcDBoGZvEX6cpfHDWgEdZXyJpntMDJf5o4MZxAIHQqycSz
+\unrestrict aTz1Q5zL2YYGmEo5ndwf36Pfknh3luOb21h1xEH33NSeFwPWpiDmnUQWvfKRV0Y
 

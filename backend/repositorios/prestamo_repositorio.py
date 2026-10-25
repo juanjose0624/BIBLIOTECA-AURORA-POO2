@@ -1,5 +1,8 @@
 
-"""Repositorio para solicitudes, préstamos y sanciones."""
+"""Repositorio encargado de gestionar las solicitudes de préstamo,
+los préstamos, las devoluciones, los puntos de los lectores
+y las sanciones de Aurora Libris.
+"""
 
 from datetime import date
 
@@ -403,16 +406,23 @@ class PrestamoRepositorio:
 
         return prestamo_id
 
+   
     def devolver(self, prestamo_id, fecha_devolucion=None):
-        """Registra la devolución y recupera el ejemplar."""
+        """Registra la devolución y concede puntos en una transacción."""
         fecha_devolucion = fecha_devolucion or date.today()
+        puntos_por_devolucion = 10
 
         with obtener_conexion() as conexion:
             with conexion.transaction():
                 prestamo = conexion.execute(
                     """
-                    SELECT id, libro_id, fecha_prestamo,
-                           fecha_devolucion, estado
+                    SELECT
+                        id,
+                        usuario_id,
+                        libro_id,
+                        fecha_prestamo,
+                        fecha_devolucion,
+                        estado
                     FROM prestamos
                     WHERE id = %s
                     FOR UPDATE
@@ -425,6 +435,7 @@ class PrestamoRepositorio:
 
                 (
                     _,
+                    usuario_id,
                     libro_id,
                     fecha_prestamo,
                     devolucion_actual,
@@ -441,6 +452,7 @@ class PrestamoRepositorio:
                         "La devolución no puede ser anterior al préstamo."
                     )
 
+                # 1. Registrar la devolución.
                 conexion.execute(
                     """
                     UPDATE prestamos
@@ -451,6 +463,7 @@ class PrestamoRepositorio:
                     (fecha_devolucion, prestamo_id),
                 )
 
+                # 2. Recuperar el ejemplar.
                 conexion.execute(
                     """
                     UPDATE libros
@@ -460,7 +473,29 @@ class PrestamoRepositorio:
                     (libro_id,),
                 )
 
+                # 3. Registrar los puntos del lector.
+                # La restricción UNIQUE de prestamo_id
+                # impide duplicar la recompensa.
+                conexion.execute(
+                    """
+                    INSERT INTO historial_puntos (
+                        usuario_id,
+                        prestamo_id,
+                        puntos,
+                        motivo
+                    )
+                    VALUES (%s, %s, %s, %s)
+                    """,
+                    (
+                        usuario_id,
+                        prestamo_id,
+                        puntos_por_devolucion,
+                        "Devolución de libro",
+                    ),
+                )
+
         return True
+
 
     def crear_sancion(
         self,

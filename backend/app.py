@@ -1,5 +1,9 @@
-"""Punto de entrada y factoría de la aplicación Flask."""
+"""Punto de entrada y factoría de la aplicación Flask de Aurora Libris.
 
+Verifica la configuración, inicializa la aplicación, establece el directorio
+de archivos estáticos, carga los parámetros del sistema y registra las rutas
+de los módulos para centralizar la creación y ejecución de la aplicación.
+"""
 from pathlib import Path
 
 from flask import Flask

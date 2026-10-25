@@ -1,134 +1,218 @@
 # 📚 Biblioteca Aurora POO II
 
-**Una biblioteca inteligente que conecta lectura, inteligencia artificial y realidad virtual.**
+**Una biblioteca inteligente que conecta lectura, gestión bibliotecaria y realidad virtual.**
 
-Biblioteca Aurora es un proyecto de desarrollo de software orientado a modernizar la experiencia de una biblioteca mediante una interfaz dinámica, herramientas de gestión bibliotecaria y experiencias tecnológicas interactivas. Su propósito es ofrecer un entorno donde los usuarios puedan explorar libros, gestionar su información, consultar su historial de préstamos y descubrir nuevas lecturas mediante recomendaciones personalizadas.
+Biblioteca Aurora es una aplicación web desarrollada en el marco de Programación Orientada a Objetos II (POO II). Su propósito es modernizar la experiencia de una biblioteca mediante una plataforma que integra la consulta de libros, la gestión de usuarios, las solicitudes y los préstamos bibliotecarios, la administración de PQRS y experiencias interactivas.
 
-El proyecto integra tecnologías web, procesamiento mediante Python, almacenamiento de información con PostgreSQL, inteligencia artificial local y visualización de entornos tridimensionales con realidad virtual.
+El proyecto utiliza una arquitectura modular basada en **Python y Flask**, con **PostgreSQL** como sistema de gestión de bases de datos y tecnologías web para construir una interfaz moderna. También incorpora experiencias tridimensionales mediante **Babylon.js**, que permiten explorar el catálogo bibliográfico en un entorno interactivo.
 
 ---
 
 ## ✨ Características principales
 
-### 🏠 1. Experiencia de navegación moderna
-- Página de inicio con una presentación visual de la biblioteca.
-- Catálogo para explorar los libros disponibles.
-- Interfaces con animaciones modernas y transiciones visuales.
-- Iconografía SVG y Font Awesome.
-- Alertas e interacciones mediante SweetAlert.
-- Diseño orientado a una experiencia de usuario intuitiva y agradable.
+### 🏠 1. Interfaz web moderna
 
-### 🔐 2. Autenticación y registro
-- Interfaz para iniciar sesión.
-- Formulario de registro de usuarios.
-- Acceso a espacios personalizados según el tipo de usuario.
-- Separación de las experiencias de usuario y administrador.
+- Página de inicio con la identidad visual de Biblioteca Aurora.
+- Catálogo para explorar los libros disponibles.
+- Formularios de inicio de sesión y registro.
+- Interfaces organizadas para facilitar la navegación.
+- Iconografía SVG y Font Awesome.
+- Alertas e interacciones mediante SweetAlert2.
+- Diseño con animaciones, transiciones y elementos visuales modernos.
+
+### 🔐 2. Autenticación y control de acceso
+
+- Inicio de sesión y registro de usuarios.
+- Gestión de sesiones mediante Flask.
+- Acceso diferenciado para usuarios y administradores.
+- Protección de rutas según la sesión y el rol.
+- Almacenamiento seguro de contraseñas mediante hashes con bcrypt.
+- Validación de credenciales y datos de entrada.
 
 ### 👤 3. Panel de usuario
-Un espacio personal desde el cual el lector puede consultar y gestionar su información.
 
-- Visualización de sus datos personales.
-- Actualización de la información de su perfil.
-- Consulta del historial de libros prestados.
-- Acceso a recomendaciones de lectura personalizadas.
-- Experiencia de exploración de libros mediante realidad virtual.
+Un espacio personal que reúne las funcionalidades disponibles para los lectores.
+
+- Consulta y actualización de datos personales.
+- Exploración del catálogo bibliográfico.
+- Consulta de solicitudes y préstamos.
+- Seguimiento del historial de libros prestados.
+- Acceso a funcionalidades de exploración interactiva integradas en el proyecto.
+- Consulta del progreso y la clasificación de lectores, según las funcionalidades habilitadas.
 
 ### 🛠️ 4. Panel de administración
-Un entorno destinado a la gestión y supervisión de la biblioteca.
 
-- Panel de control administrativo.
-- Consulta y actualización de información personal.
-- Acceso a la vista general del catálogo de libros.
-- Exploración de los libros mediante un entorno tridimensional.
-- Herramientas de visualización y seguimiento de la información bibliotecaria, según las funcionalidades integradas.
+Un entorno destinado a gestionar y supervisar las operaciones de la biblioteca.
 
-### 🤖 5. Inteligencia artificial local
-Biblioteca Aurora contempla un asistente inteligente desarrollado con Python, orientado a trabajar con información de la propia biblioteca.
+- Administración de usuarios.
+- Gestión del catálogo de libros.
+- Consulta y gestión de PQRS.
+- Revisión de solicitudes de préstamo.
+- Aprobación y rechazo de solicitudes.
+- Registro de devoluciones.
+- Gestión de sanciones asociadas a los préstamos.
+- Consulta de información y estadísticas disponibles en el sistema.
+- Exploración general del catálogo mediante un entorno tridimensional.
 
-El objetivo es aprovechar los datos disponibles para ofrecer una experiencia más personalizada, teniendo en cuenta aspectos como:
+### 📚 5. Gestión de libros
 
-- La información del usuario.
-- Su historial de lectura y de libros prestados.
-- Los libros registrados en la base de datos.
-- Las posibles afinidades entre los intereses del lector y el catálogo.
+El catálogo constituye uno de los componentes centrales de Biblioteca Aurora.
 
-Esta integración busca facilitar el descubrimiento de nuevas lecturas y generar recomendaciones relevantes a partir de la información disponible en el sistema.
+- Registro de información bibliográfica.
+- Consulta y búsqueda de libros.
+- Actualización de datos bibliográficos.
+- Eliminación de registros según las validaciones del sistema.
+- Gestión de cantidades totales y disponibles.
+- Persistencia de la información en PostgreSQL.
 
-### 🥽 6. Experiencia de realidad virtual
-Mediante A-Frame, el proyecto incorpora un entorno tridimensional e inmersivo para explorar libros recomendados o consultar el catálogo general, dependiendo del perfil de acceso.
+### 🔄 6. Solicitudes, préstamos y sanciones
 
-- **Usuarios:** exploración visual de libros recomendados.
-- **Administradores:** exploración general de los libros de la biblioteca.
-- Entorno interactivo basado en tecnologías web 3D.
+El sistema contempla un flujo bibliotecario que diferencia las solicitudes de los préstamos aprobados.
 
-### 💬 7. PQRS
-Un espacio destinado a las peticiones, quejas, reclamos y sugerencias de los usuarios, con el propósito de facilitar la comunicación con la biblioteca.
+- Consulta de solicitudes y préstamos.
+- Aprobación o rechazo de solicitudes.
+- Registro de devoluciones.
+- Seguimiento de las fechas relacionadas con los préstamos.
+- Gestión de sanciones.
+- Validación de operaciones para preservar la integridad de los registros.
+
+### 👥 7. Tabla de posiciones
+
+Biblioteca Aurora incorpora una clasificación orientada a visualizar la participación de los lectores.
+
+- Consulta de puntos acumulados.
+- Seguimiento de libros leídos.
+- Organización de los resultados según la puntuación.
+- Visualización del nivel de lectura de cada usuario.
+
+Esta funcionalidad busca incentivar la participación y convertir la lectura en una experiencia más interactiva.
+
+### 💬 8. PQRS
+
+El módulo de peticiones, quejas, reclamos y sugerencias facilita la comunicación entre los usuarios y la administración de la biblioteca.
+
+- Registro de solicitudes de los usuarios.
+- Consulta de las PQRS existentes.
+- Actualización de la información y del estado de las solicitudes.
+- Gestión de respuestas administrativas.
+- Eliminación de registros mediante las operaciones autorizadas.
+
+### 🥽 9. Exploración tridimensional y realidad virtual
+
+El proyecto incorpora experiencias de exploración de libros mediante **Babylon.js**, un motor de renderizado 3D para aplicaciones web interactivas.
+
+- Exploración visual del catálogo en un entorno tridimensional.
+- Presentación interactiva de libros.
+- Experiencias orientadas a los lectores y a la administración.
+- Exploración de libros recomendados para los usuarios, según las funcionalidades integradas.
+- Visualización general del catálogo para los administradores.
+
+La experiencia utiliza tecnologías web 3D para ofrecer una forma alternativa de descubrir y visualizar los libros de la biblioteca.
 
 ---
 
 ## 🧰 Tecnologías utilizadas
 
 | Tecnología | Propósito |
-|---|---|
+| --- | --- |
 | HTML5 | Estructura de las páginas web. |
-| CSS3 | Estilos, animaciones y diseño visual. |
-| JavaScript | Interactividad y comportamiento del frontend. |
-| Python | Desarrollo de componentes del backend y del asistente inteligente. |
-| PostgreSQL | Gestión y almacenamiento de datos. |
+| CSS3 | Diseño visual, estilos, animaciones y transiciones. |
+| JavaScript | Interactividad y comunicación con la API. |
+| Python | Desarrollo de la lógica del backend. |
+| Flask | Framework para desarrollar la aplicación web y sus rutas. |
+| PostgreSQL | Almacenamiento y gestión de datos relacionales. |
+| Psycopg | Conexión y comunicación entre Python y PostgreSQL. |
+| bcrypt | Protección de contraseñas mediante hashes. |
+| SweetAlert2 | Alertas, confirmaciones y ventanas interactivas. |
 | Font Awesome | Iconografía de la interfaz. |
-| SweetAlert | Alertas y ventanas interactivas. |
-| Dschart | Visualización de información mediante gráficos, según la integración del proyecto. |
-| SVG | Iconos y recursos gráficos vectoriales. |
-| A-Frame | Construcción de experiencias 3D y realidad virtual. |
+| SVG | Recursos gráficos vectoriales. |
+| Babylon.js | Renderizado 3D y experiencias interactivas en la web. |
+| Git y GitHub | Control de versiones y alojamiento del repositorio. |
 
-La arquitectura puede incorporar otras bibliotecas y herramientas complementarias a medida que evolucione el proyecto.
+El proyecto puede utilizar bibliotecas adicionales según los componentes y las funcionalidades incorporados.
 
 ---
 
-## 📁 Estructura del proyecto
+## 🏗️ Arquitectura del proyecto
 
-La estructura inicial del frontend publicado en este repositorio es la siguiente:
+Biblioteca Aurora organiza el backend en módulos con responsabilidades diferenciadas. Esta separación facilita el mantenimiento, las pruebas y la evolución de la aplicación.
+
+- **Rutas:** reciben las solicitudes HTTP, aplican los controles de acceso y devuelven las respuestas.
+- **Servicios:** centralizan las reglas de negocio y las validaciones.
+- **Repositorios:** encapsulan las operaciones de acceso a PostgreSQL.
+- **Modelos:** organizan las estructuras de datos del dominio.
+- **Configuración:** centraliza los parámetros de la aplicación y la conexión a la base de datos.
+- **Frontend:** contiene las páginas, los estilos, los scripts y las interfaces de gestión.
+
+La aplicación utiliza una factoría de Flask para centralizar su creación y registrar los módulos de rutas.
+
+### Estructura general
 
 ```text
 BIBLIOTECA-AURORA-POO2/
 │
+├── backend/
+│   ├── app.py
+│   ├── config.py
+│   ├── db.py
+│   ├── modelos/
+│   ├── repositorios/
+│   ├── rutas/
+│   ├── servicios/
+│   └── requirements.txt
+│
 ├── css/
-│   ├── catalogo.css
-│   ├── index.css
-│   ├── login.css
-│   ├── pqrs.css
-│   └── registro.css
-│
 ├── html/
-│   ├── catalogo.html
-│   ├── login.html
-│   ├── pqrs.html
-│   └── registro.html
-│
-├── iconos/
-│   └── favicon.svg
-│
 ├── js/
-│   ├── index.js
-│   ├── login.js
-│   └── nav.js
+├── iconos/
+├── cruds/
+│   ├── js/
+│   └── ...
+├── dashboards/
+│   ├── administrador.html
+│   ├── usuario.html
+│   ├── actualizar_datos.html
+│   ├── tabla_posiciones.html
+│   └── vr.html
 │
-├── .gitignore
 ├── index.html
+├── .gitignore
 └── README.md
 ```
 
-> Esta estructura corresponde a la versión inicial del frontend. Los archivos adicionales del backend, la configuración de PostgreSQL, el asistente inteligente y el entorno 3D se documentarán conforme se incorporen a la estructura definitiva del repositorio.
+*La estructura es orientativa y resume los principales componentes del proyecto. Los archivos concretos pueden variar a medida que evoluciona el repositorio.*
 
 ---
 
-## 🚀 Cómo ejecutar el frontend
+## 🗄️ Base de datos
 
-### Requisitos
+Biblioteca Aurora utiliza **PostgreSQL** para almacenar la información bibliotecaria y los datos necesarios para el funcionamiento de la aplicación.
 
+| Entidad | Responsabilidad |
+| --- | --- |
+| `usuarios` | Información de las cuentas, datos personales y roles. |
+| `libros` | Datos bibliográficos y disponibilidad de ejemplares. |
+| `prestamos` | Información relacionada con los préstamos y su seguimiento. |
+| `pqrs` | Peticiones, quejas, reclamos y sugerencias. |
+| Solicitudes de préstamo | Registro y seguimiento de las solicitudes de los usuarios. |
+| Sanciones | Registro de sanciones asociadas a las reglas de préstamo. |
+| Historial de puntos | Información utilizada para el seguimiento y la clasificación de lectores. |
+
+Los nombres y las relaciones concretas de las tablas deben corresponder al esquema de PostgreSQL configurado en la versión actual del proyecto.
+
+---
+
+## 🚀 Instalación y ejecución
+
+### Requisitos previos
+
+Antes de ejecutar la aplicación, asegúrate de tener instalado:
+
+- Python compatible con las dependencias del proyecto.
+- PostgreSQL.
+- Git, para clonar el repositorio.
+- Visual Studio Code u otro editor de código.
 - Un navegador web moderno.
-- Git, si deseas clonar el repositorio.
-- Visual Studio Code y la extensión Live Server, recomendados para el desarrollo local.
 
 ### 1. Clonar el repositorio
 
@@ -136,38 +220,97 @@ BIBLIOTECA-AURORA-POO2/
 git clone https://github.com/juanjose0624/BIBLIOTECA-AURORA-POO2.git
 ```
 
-### 2. Entrar en la carpeta del proyecto
+### 2. Entrar en el proyecto
 
 ```bash
 cd BIBLIOTECA-AURORA-POO2
 ```
 
-### 3. Abrir el proyecto
+### 3. Crear un entorno virtual
 
-Abre la carpeta en Visual Studio Code y ejecuta `index.html` con Live Server.
+Desde la raíz del proyecto, crea y activa un entorno virtual.
 
-También puedes abrir `index.html` directamente en tu navegador, aunque un servidor local suele ser más conveniente para el desarrollo web.
+En Windows PowerShell:
 
-**Nota:** la ejecución completa de los componentes Python, PostgreSQL e inteligencia artificial requerirá sus respectivas configuraciones y dependencias cuando estén integrados en el repositorio.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+### 4. Instalar las dependencias
+
+```powershell
+python -m pip install -r backend/requirements.txt
+```
+
+### 5. Configurar las variables de entorno
+
+Configura las variables requeridas por `backend/config.py` en un archivo `.env`, utilizando los nombres definidos por la configuración actual.
+
+Incluye los parámetros necesarios para:
+
+- La conexión a PostgreSQL.
+- La clave secreta de Flask.
+- La seguridad y duración de las sesiones.
+
+No publiques contraseñas, claves secretas ni credenciales reales en el repositorio.
+
+### 6. Preparar PostgreSQL
+
+Crea la base de datos configurada para el proyecto y asegúrate de que las tablas y los datos iniciales estén disponibles.
+
+Si el repositorio incluye scripts SQL de creación o inicialización, ejecútalos siguiendo el orden establecido por sus dependencias.
+
+### 7. Ejecutar la aplicación
+
+Desde la raíz del proyecto, inicia la aplicación:
+
+```powershell
+python backend/app.py
+```
+
+Si el punto de entrada está preparado únicamente para ser importado, utiliza el comando de ejecución definido por la configuración vigente de Flask.
+
+Abre en el navegador la dirección local que muestre Flask al iniciar.
+
+> **Importante:** la aplicación completa requiere una configuración funcional de PostgreSQL, las variables de entorno y las dependencias del backend. Abrir `index.html` directamente no sustituye la ejecución de Flask cuando se necesitan autenticación, operaciones CRUD y comunicación con la base de datos.
+
+---
+
+## 🔒 Consideraciones de seguridad
+
+Biblioteca Aurora incorpora mecanismos orientados a proteger los datos y controlar el acceso a las funcionalidades.
+
+- Contraseñas almacenadas mediante hashes con bcrypt.
+- Validaciones de datos en los servicios y las rutas.
+- Control de acceso basado en sesiones y roles.
+- Protección de rutas administrativas.
+- Configuración centralizada de parámetros sensibles.
+- Acceso a PostgreSQL mediante un módulo de conexión.
+- Validación de operaciones que afectan a usuarios, préstamos y registros relacionados.
+
+La seguridad final depende también de la configuración del entorno de ejecución, la gestión de credenciales, las restricciones de PostgreSQL y las validaciones de cada operación.
 
 ---
 
 ## 🎯 Objetivos del proyecto
 
-- Modernizar la experiencia tradicional de una biblioteca.
-- Facilitar el acceso y la consulta de información bibliográfica.
-- Diferenciar las funcionalidades disponibles para lectores y administradores.
-- Incorporar inteligencia artificial para apoyar el descubrimiento de lecturas.
-- Explorar nuevas formas de interacción mediante realidad virtual.
-- Aplicar principios de desarrollo de software, organización modular y evolución progresiva de una aplicación.
+- Modernizar la experiencia de una biblioteca tradicional.
+- Facilitar la consulta y administración de información bibliográfica.
+- Aplicar principios de programación orientada a objetos y modularidad.
+- Separar la lógica de presentación, las reglas de negocio y el acceso a datos.
+- Implementar autenticación y control de acceso según los roles.
+- Gestionar solicitudes, préstamos, devoluciones, sanciones y PQRS.
+- Incorporar experiencias interactivas mediante tecnologías tridimensionales.
+- Fortalecer las buenas prácticas de desarrollo, seguridad y mantenimiento del software.
 
 ---
 
 ## 🔮 Visión del proyecto
 
-Biblioteca Aurora busca evolucionar hacia una plataforma bibliotecaria integral que combine la organización tradicional del conocimiento con las posibilidades de las tecnologías actuales.
+Biblioteca Aurora busca evolucionar hacia una plataforma bibliotecaria integral que conecte la organización del conocimiento con las posibilidades de las tecnologías actuales.
 
-La propuesta une la lectura y la gestión bibliotecaria con herramientas inteligentes y experiencias inmersivas, manteniendo como objetivo central facilitar el acceso a los libros y mejorar la experiencia de cada usuario.
+Su propuesta combina una gestión bibliotecaria estructurada con herramientas digitales y experiencias inmersivas mediante Babylon.js. La visión es facilitar el acceso a los libros, mejorar los procesos administrativos y ofrecer a cada lector una experiencia más atractiva.
 
 ---
 
@@ -175,13 +318,14 @@ La propuesta une la lectura y la gestión bibliotecaria con herramientas intelig
 
 **En desarrollo.**
 
-Este repositorio corresponde a la evolución de Biblioteca Aurora en el marco de Programación Orientada a Objetos II (POO II). Sus funcionalidades, arquitectura y tecnologías continuarán evolucionando durante el desarrollo académico.
+Biblioteca Aurora corresponde a la evolución del proyecto académico en el marco de Programación Orientada a Objetos II (POO II). Su arquitectura, sus módulos y sus funcionalidades continúan evolucionando mediante la integración progresiva de componentes y mejoras.
+número de lineas de código: 27,036.
 
 ---
 
 ## 👨‍💻 Autor
 
-**Juan José**
+### Juan José
 
 Estudiante de Ingeniería Informática y desarrollador del proyecto.
 
