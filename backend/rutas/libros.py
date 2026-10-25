@@ -38,7 +38,6 @@ def _libro_a_dict(libro):
 
 
 @libros_bp.get("")
-@requiere_admin
 def listar_libros():
     """Devuelve todos los libros."""
     libros = servicio.listar_todos()
@@ -46,7 +45,6 @@ def listar_libros():
 
 
 @libros_bp.get("/<int:id_libro>")
-@requiere_admin
 def obtener_libro(id_libro):
     """Devuelve un libro por su ID."""
     try:

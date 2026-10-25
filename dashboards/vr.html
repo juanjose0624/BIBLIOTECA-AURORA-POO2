@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurora Biblioteca · Sala VR</title>
+<link rel="stylesheet" href="/css/vr.css">
+<link rel="icon" type="image/svg+xml" href="/iconos/favicon.svg">
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+
+<canvas id="renderCanvas" tabindex="0"></canvas>
+ 
+<div id="carga"><div class="anillo"></div><p>Preparando la sala…</p></div>
+ 
+<div id="barra">
+  <button id="volver" type="button">← Volver al panel</button>
+  <div id="titulo" class="cristal"><strong>Aurora Biblioteca</strong> · <span id="contador">0 libros</span></div>
+</div>
+ 
+<aside id="leyenda" class="cristal" aria-label="Categorías">
+  <h2>Categorías</h2>
+  <ul id="leyenda-lista"></ul>
+  <p>Las portadas apagadas están prestadas.</p>
+</aside>
+ 
+<div id="ayuda" class="cristal">Arrastra para mirar · W A S D para caminar · Clic en una portada para ver su información</div>
+<div id="aviso" class="cristal"></div>
+ 
+<aside id="panel" class="cristal" aria-live="polite">
+  <button id="p-cerrar" type="button" aria-label="Cerrar">×</button>
+  <div id="p-cat"><i></i><span></span></div>
+  <h1 id="p-titulo"></h1>
+  <div id="p-autor"></div>
+  <span id="p-estado" class="insignia"></span>
+  <p id="p-desc"></p>
+  <button id="p-solicitar" type="button">Solicitar préstamo</button>
+</aside>
+<script src="/js/vr.js"></script>
+</body>
+</html>

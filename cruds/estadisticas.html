@@ -1,0 +1,632 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="theme-color" content="#111A4A">
+    <meta name="description"
+          content="Panel de estadísticas y analítica administrativa de Aurora Libris.">
+
+    <title>Estadísticas · Aurora Libris</title>
+
+    <link rel="icon" type="image/svg+xml" href="/iconos/favicon.svg">
+
+    <!-- Tipografías -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Estilos compartidos y propios -->
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/css/estadisticas.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Fondo Aurora -->
+    <div class="cielo" aria-hidden="true">
+        <span class="banda b1"></span>
+        <span class="banda b2"></span>
+        <span class="banda b3"></span>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg fixed-top nav-aurora"
+         data-bs-theme="dark">
+
+        <div class="container-fluid px-lg-4">
+
+            <a class="navbar-brand d-flex align-items-center gap-2"
+               href="estadisticas.html">
+
+                <svg width="30" height="30"
+                     viewBox="0 0 32 32"
+                     fill="none"
+                     aria-hidden="true">
+
+                    <defs>
+                        <linearGradient id="lg"
+                                        x1="0" y1="0"
+                                        x2="32" y2="32"
+                                        gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#8FD3FF"/>
+                            <stop offset="1" stop-color="#7C5CF2"/>
+                        </linearGradient>
+                    </defs>
+
+                    <path d="M3 24c4-10 9-15 13-15s9 5 13 15"
+                          stroke="url(#lg)"
+                          stroke-width="2.4"
+                          stroke-linecap="round"/>
+
+                    <path d="M8 25c3-6 6-9 8-9s5 3 8 9"
+                          stroke="url(#lg)"
+                          stroke-width="2.4"
+                          stroke-linecap="round"
+                          opacity=".6"/>
+
+                    <path d="M4 28h24"
+                          stroke="#C9BEFF"
+                          stroke-width="2.4"
+                          stroke-linecap="round"/>
+                </svg>
+
+                <span>Aurora Libris</span>
+            </a>
+
+            <button class="navbar-toggler border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menuAdmin"
+                    aria-controls="menuAdmin"
+                    aria-expanded="false"
+                    aria-label="Abrir menú">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menuAdmin">
+
+                <ul class="navbar-nav mx-lg-auto gap-lg-3">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboards/administrador.html">
+                            Panel administrativo
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="solicitudes.html">
+                            Solicitudes de usuarios
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="usuarios.html">
+                            Usuarios
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="pqrs.html">
+                            PQRS
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="libros.html">
+                            Libros
+                        </a>
+                    </li>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link activo"
+                           href="estadisticas.html"
+                           aria-current="page">
+                            Estadísticas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido -->
+    <main class="estadisticas">
+
+        <!-- Encabezado -->
+        <section class="estadisticas-hero">
+            <div class="container-fluid px-lg-4">
+
+                <div class="estadisticas-intro">
+
+                    <span class="etiqueta">
+                        AURORA LIBRIS · ANALÍTICA
+                    </span>
+
+                    <h1>Centro de estadísticas.</h1>
+
+                    <p class="sub">
+                        Una visión general de la biblioteca, sus usuarios,
+                        préstamos, inventario y solicitudes.
+                    </p>
+
+                    <div class="estadisticas-meta">
+                        <span class="estado-conexion"
+                              id="estado-conexion"
+                              role="status"
+                              aria-live="polite">
+                            <span class="estado-punto"></span>
+                            Esperando conexión con la base de datos
+                        </span>
+
+                        <span id="ultima-actualizacion">
+                            Actualización pendiente
+                        </span>
+                    </div>
+
+<div class="estadisticas-acciones">
+    <button
+        type="button"
+        class="btn-exportar-pdf"
+        id="btnExportarPDF">
+
+        <svg viewBox="0 0 24 24"
+             fill="none"
+             aria-hidden="true">
+            <path d="M12 3v12m0 0 4-4m-4 4-4-4"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M5 16v4h14v-4"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+
+        Exportar informe PDF
+    </button>
+</div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Indicadores principales -->
+        <section class="seccion resumen-estadisticas"
+                 aria-labelledby="titulo-resumen">
+
+            <div class="container-fluid px-lg-4">
+
+                <div class="seccion-encabezado">
+                    <div>
+                        <span class="etiqueta">RESUMEN GENERAL</span>
+                        <h2 id="titulo-resumen">Indicadores principales</h2>
+                    </div>
+                </div>
+
+                <div class="estadisticas-grid">
+
+                    <!-- Usuarios -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                    <circle cx="10" cy="7" r="4"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"/>
+                                    <path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">COMUNIDAD</span>
+                        </div>
+
+                        <p class="stat-titulo">Usuarios registrados</p>
+                        <p class="stat-valor" id="total-usuarios">—</p>
+                        <p class="stat-descripcion">
+                            Cuentas registradas en la plataforma
+                        </p>
+                    </article>
+
+                    <!-- Administradores -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round"/>
+                                    <path d="m9 12 2 2 4-4"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">SEGURIDAD</span>
+                        </div>
+
+                        <p class="stat-titulo">Administradores</p>
+                        <p class="stat-valor" id="total-administradores">—</p>
+                        <p class="stat-descripcion">
+                            Usuarios con rol administrativo
+                        </p>
+                    </article>
+
+                    <!-- Préstamos -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round"/>
+                                    <path d="M8 7h8M8 11h8"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">ACTIVIDAD</span>
+                        </div>
+
+                        <p class="stat-titulo">Préstamos registrados</p>
+                        <p class="stat-valor" id="total-prestamos">—</p>
+                        <p class="stat-descripcion">
+                            Registros históricos de préstamos
+                        </p>
+                    </article>
+
+                    <!-- PQRS -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 11.5a8.5 8.5 0 0 1-12.9 7.3L3 21l2.2-5.1A8.5 8.5 0 1 1 21 11.5Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round"/>
+                                    <path d="M8 11h8M8 8h5"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">ATENCIÓN</span>
+                        </div>
+
+                        <p class="stat-titulo">Solicitudes PQRS</p>
+                        <p class="stat-valor" id="total-pqrs">—</p>
+                        <p class="stat-descripcion">
+                            Peticiones, quejas, reclamos y sugerencias
+                        </p>
+                    </article>
+
+                    <!-- Libros disponibles -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">INVENTARIO</span>
+                        </div>
+
+                        <p class="stat-titulo">Ejemplares disponibles</p>
+                        <p class="stat-valor" id="total-disponibles">—</p>
+                        <p class="stat-descripcion">
+                            Ejemplares listos para préstamo
+                        </p>
+                    </article>
+
+                    <!-- Libros no disponibles -->
+                    <article class="stat-card">
+                        <div class="stat-card-top">
+                            <span class="stat-icono" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round"/>
+                                    <path d="m10 7 4 4m0-4-4 4"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="stat-categoria">INVENTARIO</span>
+                        </div>
+
+                        <p class="stat-titulo">Ejemplares no disponibles</p>
+                        <p class="stat-valor" id="total-no-disponibles">—</p>
+                        <p class="stat-descripcion">
+                            Ejemplares prestados o no disponibles
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Gráficos principales -->
+        <section class="seccion seccion-graficos"
+                 aria-labelledby="titulo-graficos">
+
+            <div class="container-fluid px-lg-4">
+
+                <div class="seccion-encabezado">
+                    <div>
+                        <span class="etiqueta">VISUALIZACIÓN DE DATOS</span>
+                        <h2 id="titulo-graficos">Panorama de la biblioteca</h2>
+                        <p class="seccion-descripcion">
+                            Distribuciones y tendencias basadas en los registros reales.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="graficos-grid">
+
+                    <!-- Distribución de inventario -->
+                    <article class="grafico-card">
+                        <div class="grafico-cabecera">
+                            <div>
+                                <h3>Disponibilidad de ejemplares</h3>
+                                <p>Distribución del inventario</p>
+                            </div>
+                        </div>
+
+                        <div class="grafico-contenedor"
+                             id="grafico-disponibilidad"
+                             role="img"
+                             aria-label="Gráfico de ejemplares disponibles y no disponibles">
+
+                            <p class="estado-grafico">
+                                El gráfico se mostrará al conectar los datos.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Usuarios y administradores -->
+                    <article class="grafico-card">
+                        <div class="grafico-cabecera">
+                            <div>
+                                <h3>Composición de usuarios</h3>
+                                <p>Distribución por rol</p>
+                            </div>
+                        </div>
+
+                        <div class="grafico-contenedor"
+                             id="grafico-usuarios"
+                             role="img"
+                             aria-label="Gráfico de usuarios y administradores">
+
+                            <p class="estado-grafico">
+                                El gráfico se mostrará al conectar los datos.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- PQRS -->
+                    <article class="grafico-card">
+                        <div class="grafico-cabecera">
+                            <div>
+                                <h3>Clasificación de PQRS</h3>
+                                <p>Distribución por tipo de solicitud</p>
+                            </div>
+                        </div>
+
+                        <div class="grafico-contenedor"
+                             id="grafico-pqrs"
+                             role="img"
+                             aria-label="Gráfico de clasificación de PQRS">
+
+                            <p class="estado-grafico">
+                                El gráfico se mostrará al conectar los datos.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Préstamos -->
+                    <article class="grafico-card grafico-card-amplio">
+                        <div class="grafico-cabecera">
+                            <div>
+                                <h3>Actividad de préstamos</h3>
+                                <p>Evolución temporal según las fechas registradas</p>
+                            </div>
+                        </div>
+
+                        <div class="grafico-contenedor grafico-lineal"
+                             id="grafico-prestamos"
+                             role="img"
+                             aria-label="Gráfico de actividad de préstamos a lo largo del tiempo">
+
+                            <p class="estado-grafico">
+                                El gráfico se mostrará al conectar los datos.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Detalle del inventario -->
+        <section class="seccion seccion-detalle"
+                 aria-labelledby="titulo-inventario">
+
+            <div class="container-fluid px-lg-4">
+
+                <div class="seccion-encabezado">
+                    <div>
+                        <span class="etiqueta">CONTROL DE EXISTENCIAS</span>
+                        <h2 id="titulo-inventario">Inventario de libros</h2>
+                    </div>
+                </div>
+
+                <div class="inventario-panel">
+
+                    <div class="inventario-resumen">
+                        <div>
+                            <span>Total de títulos</span>
+                            <strong id="total-titulos">—</strong>
+                        </div>
+
+                        <div>
+                            <span>Total de ejemplares</span>
+                            <strong id="total-ejemplares">—</strong>
+                        </div>
+
+                        <div>
+                            <span>Porcentaje disponible</span>
+                            <strong id="porcentaje-disponible">—</strong>
+                        </div>
+                    </div>
+
+                    <div class="inventario-barra"
+                         role="img"
+                         aria-label="Proporción de ejemplares disponibles y no disponibles">
+
+                        <div class="inventario-barra-disponible"
+                             id="barra-disponibles"
+                             style="width: 0%">
+                        </div>
+
+                        <div class="inventario-barra-no-disponible"
+                             id="barra-no-disponibles"
+                             style="width: 0%">
+                        </div>
+                    </div>
+
+                    <div class="inventario-leyenda">
+                        <span>
+                            <i class="leyenda-punto disponible"></i>
+                            Disponibles
+                            <strong id="leyenda-disponibles">—</strong>
+                        </span>
+
+                        <span>
+                            <i class="leyenda-punto no-disponible"></i>
+                            No disponibles
+                            <strong id="leyenda-no-disponibles">—</strong>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Estado de solicitudes -->
+        <section class="seccion seccion-pqrs"
+                 aria-labelledby="titulo-pqrs">
+
+            <div class="container-fluid px-lg-4">
+
+                <div class="seccion-encabezado">
+                    <div>
+                        <span class="etiqueta">SERVICIO AL USUARIO</span>
+                        <h2 id="titulo-pqrs">Estado de las PQRS</h2>
+                    </div>
+                </div>
+
+                <div class="pqrs-grid">
+
+                    <article class="pqrs-stat">
+                        <span class="pqrs-label">Total recibidas</span>
+                        <strong id="pqrs-total">—</strong>
+                    </article>
+
+                    <article class="pqrs-stat">
+                        <span class="pqrs-label">Pendientes</span>
+                        <strong id="pqrs-pendientes">—</strong>
+                    </article>
+
+                    <article class="pqrs-stat">
+                        <span class="pqrs-label">En proceso</span>
+                        <strong id="pqrs-en-proceso">—</strong>
+                    </article>
+
+                    <article class="pqrs-stat">
+                        <span class="pqrs-label">Respondidas o cerradas</span>
+                        <strong id="pqrs-resueltas">—</strong>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Pie -->
+        <footer class="pie">
+            <div class="container-fluid px-lg-4 d-flex flex-wrap
+                        justify-content-between gap-2">
+                <span>Aurora Libris · Biblioteca digital</span>
+                <span>© <span id="anio"></span> · Proyecto de POO 2</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Volver arriba -->
+    <button class="btn-arriba"
+            id="btnArriba"
+            type="button"
+            aria-label="Volver arriba">
+
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 14l6-6 6 6"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+    </button>
+    <!-- Bibliotecas -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Bibliotecas para exportar PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- Navegación -->
+    <script src="/js/nav.js" defer></script>
+
+    <!-- Lógica propia del panel -->
+    <script src="/js/estadisticas_crud.js" defer></script>
+</body>
+</html>

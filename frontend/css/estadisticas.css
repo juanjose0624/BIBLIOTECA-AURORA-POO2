@@ -1,0 +1,929 @@
+
+/* =========================================================
+   AURORA LIBRIS · PANEL DE ESTADÍSTICAS
+   Archivo: administrador/css/estadisticas.css
+   ========================================================= */
+
+/* ---------- Variables del panel ---------- */
+
+:root {
+    --est-bg: #111A4A;
+    --est-bg-deep: #0B1033;
+    --est-panel: rgba(20, 30, 78, 0.78);
+    --est-panel-hover: rgba(30, 43, 101, 0.88);
+    --est-border: rgba(201, 190, 255, 0.15);
+    --est-border-hover: rgba(143, 211, 255, 0.42);
+    --est-text: #E9EDFF;
+    --est-muted: #A9B4D8;
+    --est-blue: #8FD3FF;
+    --est-purple: #A99AFF;
+    --est-violet: #7C5CF2;
+    --est-green: #76E2B3;
+    --est-orange: #FFCC8A;
+    --est-red: #FF8FA3;
+    --est-radius: 22px;
+    --est-shadow: 0 18px 45px rgba(4, 8, 35, 0.18);
+}
+
+/* ---------- Base ---------- */
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--est-text);
+    font-family: "Manrope", sans-serif;
+}
+
+body,
+.estadisticas {
+    overflow-x: hidden;
+}
+
+.estadisticas {
+    position: relative;
+    z-index: 1;
+    padding-top: 76px;
+}
+
+.estadisticas h1,
+.estadisticas h2,
+.estadisticas h3,
+.estadisticas p {
+    overflow-wrap: anywhere;
+}
+
+.estadisticas h1,
+.estadisticas h2,
+.estadisticas h3 {
+    color: var(--est-text);
+}
+
+.estadisticas a {
+    text-decoration: none;
+}
+
+/* ---------- Navegación ---------- */
+
+.nav-aurora {
+    border-bottom: 1px solid rgba(201, 190, 255, 0.10);
+    background: rgba(10, 16, 49, 0.86);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.nav-aurora .navbar-brand {
+    color: var(--est-text);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.nav-aurora .nav-link {
+    position: relative;
+    color: var(--est-muted);
+    transition: color 0.2s ease;
+}
+
+.nav-aurora .nav-link:hover,
+.nav-aurora .nav-link.activo,
+.nav-aurora .nav-link[aria-current="page"] {
+    color: #FFFFFF;
+}
+
+.nav-aurora .nav-link.activo::after,
+.nav-aurora .nav-link[aria-current="page"]::after {
+    position: absolute;
+    right: 0.5rem;
+    bottom: 0.1rem;
+    left: 0.5rem;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(
+        90deg,
+        var(--est-blue),
+        var(--est-purple)
+    );
+    content: "";
+}
+
+.nav-aurora .navbar-toggler:focus-visible {
+    outline: 2px solid var(--est-blue);
+    outline-offset: 3px;
+}
+
+/* ---------- Encabezado ---------- */
+
+.estadisticas-hero {
+    position: relative;
+    padding: 5rem 0 3.25rem;
+}
+
+.estadisticas-intro {
+    max-width: 1000px;
+}
+
+.etiqueta {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--est-blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    line-height: 1.6;
+}
+
+.estadisticas-intro h1 {
+    max-width: 850px;
+    margin: 0 0 1.15rem;
+    font-family: "Fraunces", serif;
+    font-size: clamp(2.5rem, 5vw, 4.6rem);
+    font-weight: 400;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+}
+
+.estadisticas-intro .sub {
+    max-width: 700px;
+    margin: 0;
+    color: var(--est-muted);
+    font-size: clamp(0.98rem, 1.5vw, 1.1rem);
+    line-height: 1.85;
+}
+
+.estadisticas-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.8rem;
+    color: var(--est-muted);
+    font-size: 0.78rem;
+}
+
+.estado-conexion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.estado-punto {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: var(--est-orange);
+    box-shadow: 0 0 12px rgba(255, 204, 138, 0.35);
+}
+
+/* El JavaScript podrá añadir estas clases según el estado real. */
+
+.estado-conexion.conectado .estado-punto {
+    background: var(--est-green);
+    box-shadow: 0 0 12px rgba(118, 226, 179, 0.45);
+}
+
+.estado-conexion.error .estado-punto {
+    background: var(--est-red);
+    box-shadow: 0 0 12px rgba(255, 143, 163, 0.45);
+}
+
+/* ---------- Acciones del panel / PDF ---------- */
+
+.estadisticas-acciones {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.6rem;
+}
+
+.btn-exportar-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    min-height: 46px;
+    padding: 0.8rem 1.25rem;
+    border: 1px solid rgba(143, 211, 255, 0.45);
+    border-radius: 999px;
+    background: linear-gradient(
+        135deg,
+        rgba(124, 92, 242, 0.95),
+        rgba(67, 91, 190, 0.95)
+    );
+    color: #FFFFFF;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(10, 15, 50, 0.22);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        filter 0.2s ease;
+}
+
+.btn-exportar-pdf svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.btn-exportar-pdf:hover {
+    transform: translateY(-2px);
+    border-color: var(--est-blue);
+    filter: brightness(1.12);
+    box-shadow: 0 12px 28px rgba(10, 15, 50, 0.32);
+}
+
+.btn-exportar-pdf:active {
+    transform: translateY(0);
+}
+
+.btn-exportar-pdf:focus-visible {
+    outline: 3px solid var(--est-blue);
+    outline-offset: 4px;
+}
+
+.btn-exportar-pdf:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+    filter: none;
+}
+
+.btn-exportar-pdf:disabled::after {
+    content: "";
+}
+
+/* ---------- Secciones ---------- */
+
+.seccion {
+    padding: 2.2rem 0;
+}
+
+.seccion-encabezado {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 1.8rem;
+}
+
+.seccion-encabezado .etiqueta {
+    margin-bottom: 0.55rem;
+}
+
+.seccion-encabezado h2 {
+    margin: 0;
+    font-family: "Fraunces", serif;
+    font-size: clamp(1.8rem, 3vw, 2.65rem);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.seccion-descripcion {
+    margin: 0.65rem 0 0;
+    color: var(--est-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* ---------- Cuadrícula de estadísticas ---------- */
+
+.estadisticas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.stat-card {
+    position: relative;
+    min-width: 0;
+    padding: 1.45rem;
+    overflow: hidden;
+    border: 1px solid var(--est-border);
+    border-radius: var(--est-radius);
+    background: var(--est-panel);
+    box-shadow: var(--est-shadow);
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.stat-card::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(143, 211, 255, 0.7),
+        rgba(169, 154, 255, 0.6),
+        transparent
+    );
+    content: "";
+    opacity: 0.65;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--est-border-hover);
+    background: var(--est-panel-hover);
+}
+
+.stat-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border: 1px solid rgba(143, 211, 255, 0.18);
+    border-radius: 15px;
+    background: rgba(124, 92, 242, 0.13);
+    color: var(--est-blue);
+}
+
+.stat-icono svg {
+    width: 23px;
+    height: 23px;
+}
+
+.stat-categoria {
+    color: var(--est-muted);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-align: right;
+}
+
+.stat-titulo {
+    margin: 0 0 0.6rem;
+    color: var(--est-muted);
+    font-size: 0.87rem;
+    line-height: 1.5;
+}
+
+.stat-valor {
+    margin: 0;
+    color: #FFFFFF;
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.055em;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-descripcion {
+    margin: 0.85rem 0 0;
+    color: var(--est-muted);
+    font-size: 0.76rem;
+    line-height: 1.6;
+}
+
+/* ---------- Gráficos ---------- */
+
+.seccion-graficos {
+    padding-top: 3.1rem;
+}
+
+.graficos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.2rem;
+}
+
+.grafico-card {
+    min-width: 0;
+    padding: 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--est-border);
+    border-radius: var(--est-radius);
+    background: var(--est-panel);
+    box-shadow: var(--est-shadow);
+}
+
+.grafico-card-amplio {
+    grid-column: 1 / -1;
+}
+
+.grafico-cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+}
+
+.grafico-cabecera h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.grafico-cabecera p {
+    margin: 0.4rem 0 0;
+    color: var(--est-muted);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+.grafico-contenedor {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 280px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.grafico-lineal {
+    min-height: 340px;
+}
+
+.estado-grafico {
+    max-width: 280px;
+    margin: 0;
+    padding: 1rem;
+    color: var(--est-muted);
+    font-size: 0.82rem;
+    line-height: 1.8;
+    text-align: center;
+}
+
+/* Los gráficos SVG/canvas se adaptan al contenedor. */
+
+.grafico-contenedor svg {
+    max-width: 100%;
+}
+
+.grafico-contenedor canvas {
+    max-width: 100%;
+}
+
+/* ---------- Inventario ---------- */
+
+.seccion-detalle {
+    padding-top: 2.8rem;
+}
+
+.inventario-panel {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--est-border);
+    border-radius: var(--est-radius);
+    background: var(--est-panel);
+    box-shadow: var(--est-shadow);
+}
+
+.inventario-resumen {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.8rem;
+}
+
+.inventario-resumen > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inventario-resumen span {
+    color: var(--est-muted);
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.inventario-resumen strong {
+    color: #FFFFFF;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+}
+
+.inventario-barra {
+    display: flex;
+    width: 100%;
+    height: 14px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.inventario-barra-disponible {
+    width: 0;
+    background: linear-gradient(90deg, #76E2B3, #8FD3FF);
+    transition: width 0.6s ease;
+}
+
+.inventario-barra-no-disponible {
+    width: 0;
+    background: linear-gradient(90deg, #7C5CF2, #A99AFF);
+    transition: width 0.6s ease;
+}
+
+.inventario-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.3rem;
+}
+
+.inventario-leyenda > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--est-muted);
+    font-size: 0.8rem;
+}
+
+.inventario-leyenda strong {
+    margin-left: 0.15rem;
+    color: var(--est-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.leyenda-punto {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    flex: 0 0 9px;
+    border-radius: 50%;
+}
+
+.leyenda-punto.disponible {
+    background: var(--est-green);
+}
+
+.leyenda-punto.no-disponible {
+    background: var(--est-purple);
+}
+
+/* ---------- PQRS ---------- */
+
+.seccion-pqrs {
+    padding-top: 2.8rem;
+    padding-bottom: 4.5rem;
+}
+
+.pqrs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.pqrs-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+    padding: 1.35rem;
+    border: 1px solid var(--est-border);
+    border-radius: 18px;
+    background: rgba(20, 30, 78, 0.68);
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.pqrs-stat:hover {
+    transform: translateY(-3px);
+    border-color: var(--est-border-hover);
+}
+
+.pqrs-label {
+    color: var(--est-muted);
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+.pqrs-stat strong {
+    color: #FFFFFF;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Pie de página ---------- */
+
+.estadisticas .pie {
+    position: relative;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--est-border);
+    background: rgba(8, 13, 42, 0.45);
+    color: var(--est-muted);
+    font-size: 0.78rem;
+    line-height: 1.8;
+}
+
+/* ---------- Botón volver arriba ---------- */
+
+.btn-arriba {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1050;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(143, 211, 255, 0.35);
+    border-radius: 50%;
+    background: rgba(20, 30, 78, 0.94);
+    color: var(--est-text);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.btn-arriba.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.btn-arriba:hover {
+    background: var(--est-violet);
+}
+
+.btn-arriba svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ---------- Estados de carga ---------- */
+
+.stat-valor:empty::after {
+    color: var(--est-muted);
+    content: "—";
+}
+
+[aria-busy="true"] {
+    cursor: progress;
+}
+
+/* ---------- Accesibilidad ---------- */
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--est-blue);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ---------- Responsive: tablet ---------- */
+
+@media (max-width: 991.98px) {
+    .estadisticas {
+        padding-top: 68px;
+    }
+
+    .estadisticas-hero {
+        padding-top: 4rem;
+    }
+
+    .estadisticas-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .graficos-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .grafico-card-amplio {
+        grid-column: auto;
+    }
+
+    .pqrs-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .nav-aurora .nav-link.activo::after,
+    .nav-aurora .nav-link[aria-current="page"]::after {
+        right: auto;
+        left: 0;
+        width: 75px;
+    }
+}
+
+/* ---------- Responsive: móviles ---------- */
+
+@media (max-width: 575.98px) {
+    .estadisticas {
+        padding-top: 62px;
+    }
+
+    .estadisticas-hero {
+        padding-top: 3.1rem;
+        padding-bottom: 2rem;
+    }
+
+    .estadisticas-intro h1 {
+        font-size: clamp(2.3rem, 11vw, 3.3rem);
+    }
+
+    .estadisticas-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .estadisticas-acciones,
+    .btn-exportar-pdf {
+        width: 100%;
+    }
+
+    .seccion {
+        padding-top: 1.7rem;
+        padding-bottom: 1.7rem;
+    }
+
+    .seccion-encabezado {
+        margin-bottom: 1.25rem;
+    }
+
+    .estadisticas-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+    }
+
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .stat-card-top {
+        margin-bottom: 1.1rem;
+    }
+
+    .stat-valor {
+        font-size: 2.45rem;
+    }
+
+    .grafico-card {
+        padding: 1rem;
+        border-radius: 18px;
+    }
+
+    .grafico-contenedor {
+        min-height: 245px;
+    }
+
+    .grafico-lineal {
+        min-height: 280px;
+    }
+
+    .inventario-resumen {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+    }
+
+    .inventario-resumen > div {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--est-border);
+    }
+
+    .inventario-resumen > div:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+
+    .inventario-leyenda {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .pqrs-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.8rem;
+    }
+
+    .pqrs-stat {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.1rem;
+    }
+
+    .pqrs-stat strong {
+        font-size: 1.8rem;
+    }
+
+    .btn-arriba {
+        right: 1rem;
+        bottom: 1rem;
+    }
+}
+
+/* ---------- Impresión ---------- */
+
+@media print {
+    body {
+        color: #111827 !important;
+        background: #FFFFFF !important;
+    }
+
+    .cielo,
+    .nav-aurora,
+    .btn-arriba,
+    .estadisticas-acciones {
+        display: none !important;
+    }
+
+    .estadisticas {
+        padding-top: 0;
+    }
+
+    .estadisticas h1,
+    .estadisticas h2,
+    .estadisticas h3,
+    .stat-valor,
+    .pqrs-stat strong,
+    .inventario-resumen strong {
+        color: #111827 !important;
+    }
+
+    .estadisticas-intro .sub,
+    .estadisticas-meta,
+    .stat-titulo,
+    .stat-descripcion,
+    .grafico-cabecera p,
+    .inventario-resumen span,
+    .inventario-leyenda > span,
+    .pqrs-label {
+        color: #4B5563 !important;
+    }
+
+    .stat-card,
+    .grafico-card,
+    .inventario-panel,
+    .pqrs-stat {
+        color: #111827 !important;
+        background: #FFFFFF !important;
+        border: 1px solid #D1D5DB !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+
+    .seccion {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .estadisticas-grid,
+    .graficos-grid {
+        gap: 0.6rem;
+    }
+
+    .grafico-contenedor {
+        break-inside: avoid;
+    }
+
+    .pie {
+        color: #4B5563 !important;
+        background: #FFFFFF !important;
+    }
+}
